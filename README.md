@@ -60,19 +60,21 @@ sudo apt install "./pps_${VERSION}_amd64.deb"
 pps auth
 pps auth status
 
-pps create --name two-sum --template stdio
-pps clone 107
+pps create
+pps clone 1
 pps invocate
 pps list invocate
 pps detail invocate 456
 pps deploy
 
 pps run .
-pps submit 107 solution.cpp --language cpp17
+pps problem 1
+pps submit 1 solution.cpp
+pps -v
 pps update
 ```
 
-전체 명령은 `pps --help`, 세부 명령은 `pps <command> --help`로 확인할 수 있습니다. 자세한 사용 흐름은 [명령어 안내](docs/commands.md)를 참고하세요.
+예제의 `#1`은 두 정수의 합을 출력하는 공개 문제 **a + b**입니다(1초, 128 MiB, 예제 `1 2` → `3`). 터미널에서 실행하면 생성 옵션, clone 방식, 실행 환경, 제출 언어처럼 정해진 선택지를 번호 메뉴로 고를 수 있습니다. 플래그와 전체 명령은 `pps --help`, 세부 명령은 `pps <command> --help`로 확인할 수 있습니다. 자세한 사용 흐름은 [명령어 안내](docs/commands.md)를 참고하세요.
 
 ## 인증 정보와 업데이트 상태
 
@@ -94,6 +96,8 @@ pps update
 ```
 
 `pps update`는 현재 운영체제와 CPU에 맞는 릴리즈를 내려받고 `checksums.txt`의 SHA-256을 검증한 뒤 실행 파일을 교체합니다. Windows에서는 실행 중인 파일 잠금 때문에 명령이 종료된 직후 교체가 완료됩니다. development 프로필인 `pps-dev`와 `go run .`에서는 자동 확인과 자체 업데이트가 비활성화됩니다.
+
+`pps --version`은 네트워크 없이 현재 버전만 한 줄로 출력합니다. `pps -v`는 현재 버전, 최신 GitHub Release, 업데이트 필요 여부를 함께 확인하며 네트워크를 사용할 수 없으면 최신 버전을 `unknown`으로 표시합니다.
 
 `v0.1.0`에는 `pps update`가 없으므로 설치 스크립트나 Homebrew로 `v0.2.0`을 한 번 설치해야 합니다. 그 이후 버전부터는 `pps update`를 사용할 수 있습니다. 자세한 내용은 [설치 상세 문서](docs/installation.md)를 참고하세요.
 

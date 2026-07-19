@@ -2,6 +2,18 @@
 
 This document records user-visible PPS CLI changes. Versions follow [Semantic Versioning](https://semver.org/).
 
+## [v0.3.0] - 2026-07-20
+
+### Added
+
+- Web-equivalent menus for creation, submission, result filters, and dynamic education/contest problem selection
+- Current/latest/update-status reporting through `pps -v`
+
+### Changed
+
+- User examples now consistently use public problem `#1`, **a + b**
+- `pps --version` remains a network-free, single-line version output
+
 ## [v0.2.0] - 2026-07-19
 
 ### Added

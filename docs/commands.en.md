@@ -8,8 +8,12 @@ Invalid input prints contextual command help. Add `--json` to API-oriented comma
 
 ```sh
 pps --version
+pps -v
+pps --json -v
 pps update
 ```
+
+`pps --version` is a stable, network-free single-line installed-version check. `pps -v` also reports the latest GitHub Release and update status. This explicit lookup can use the network for up to two seconds. If it fails, the current version still succeeds while the latest version and status are shown as `unknown`.
 
 Release builds check for a new release at most once every 24 hours when a command runs and suggest `pps update` when one exists. The request stops after two seconds; both successful and failed attempts delay the next check for 24 hours. Notices go to stderr and do not change `--json` stdout.
 
@@ -26,14 +30,17 @@ pps auth logout
 ## Problem repositories
 
 ```sh
-pps create --name two-sum --template stdio
-pps clone 107
+pps create
+pps problem 1
+pps clone 1
 pps clone nickname/two-sum
 pps list problem
 pps search two sum
 ```
 
-Repositories cloned by PPS store their problem ID in `.git/pps.json`, allowing later commands to infer it.
+`pps create` presents numbered choices for template, owner, GitHub repository visibility, and post-deployment problem visibility. Supplying the corresponding flags skips those prompts.
+
+Problem `#1` is the public **a + b** example: print the sum of two integers (1 second, 128 MiB, sample `1 2` → `3`). `pps problem 1` lets you choose a statement when multiple languages are available. Clone offers HTTPS, SSH, and GitHub CLI transports. Repositories cloned by PPS store their problem ID in `.git/pps.json`, allowing later commands to infer it.
 
 ## Git synchronization
 
@@ -63,15 +70,21 @@ pps run .
 pps run --docker
 ```
 
-Native local invocation has no security sandbox; only run trusted repositories. Docker mode uses a network-disabled PPS toolchain container.
+Native local invocation has no security sandbox; only run trusted repositories. Docker mode uses the network-disabled PPS CLI runner container.
+
+In a terminal, choose native or Docker execution from a numbered menu. Pass `--docker` or `--docker=false` to skip the prompt.
 
 ## Submissions
 
 ```sh
-pps submit 107 solution.cpp --language cpp17
-pps edu_submit 10 3 107 solution.py --language py3
-pps contest_submit 20 0 Main.java --language java8
-pps list submit 107
+pps submit 1 solution.cpp
+pps edu_submit 10 solution.py
+pps contest_submit 20 Main.java
+pps list submit 1
 ```
+
+General submission offers all eight supported languages and preselects the language inferred from the file extension. Education submission can select a visible course problem when lecture/problem IDs are omitted. Contest submission can select a current contest problem when its index is omitted. Existing full-ID syntax and `--language` remain available for automation.
+
+All three submission-list commands expose the same 11 result filters as the web UI. Education and contest lists also provide dynamic problem filters; explicit flags skip these menus.
 
 Use `pps <command> --help` as the authoritative reference for current flags and syntax.

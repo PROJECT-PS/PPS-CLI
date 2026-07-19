@@ -54,18 +54,20 @@ See [distribution channel status](docs/package-managers.en.md) and the [detailed
 
 ```sh
 pps auth
-pps create --name two-sum --template stdio
-pps clone 107
+pps create
+pps clone 1
 pps invocate
 pps list invocate
 pps detail invocate 456
 pps deploy
 pps run .
-pps submit 107 solution.cpp --language cpp17
+pps problem 1
+pps submit 1 solution.cpp
+pps -v
 pps update
 ```
 
-Run `pps --help` or `pps <command> --help` for contextual help. See the [command guide](docs/commands.en.md) for complete workflows.
+Problem `#1` in these examples is the public **a + b** problem: print the sum of two integers (1 second, 128 MiB, sample `1 2` → `3`). In a terminal, PPS presents numbered menus for finite choices such as creation settings, clone transport, execution environment, and submission language. Run `pps --help` or `pps <command> --help` for flags and contextual help. See the [command guide](docs/commands.en.md) for complete workflows.
 
 ## Authentication and update state
 
@@ -87,6 +89,8 @@ pps update
 ```
 
 `pps update` downloads the archive for the current platform, verifies it against `checksums.txt`, and replaces the executable. Windows finishes replacement after the command exits because a running executable may be locked. Automatic checks and self-update are disabled for the `pps-dev` and `go run .` development profiles.
+
+`pps --version` prints only the installed version without network access. `pps -v` also checks the latest GitHub Release and reports whether an update is available; the latest version is shown as `unknown` when it cannot be checked.
 
 Version `v0.1.0` did not include `pps update`; install `v0.2.0` once through the installer or Homebrew. Later releases can be installed with `pps update`. See the [detailed installation guide](docs/installation.en.md).
 
