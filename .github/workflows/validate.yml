@@ -11,7 +11,7 @@ jobs:
   unix:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v6
+      - uses: actions/checkout@v7
       - name: Validate version and shell installer
         shell: bash
         run: |
@@ -27,7 +27,7 @@ jobs:
   windows:
     runs-on: windows-latest
     steps:
-      - uses: actions/checkout@v6
+      - uses: actions/checkout@v7
       - name: Parse PowerShell installer
         shell: pwsh
         run: |
