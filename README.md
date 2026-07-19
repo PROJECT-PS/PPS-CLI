@@ -28,7 +28,7 @@ curl -fsSL https://raw.githubusercontent.com/PROJECT-PS/PPS-CLI/main/install.sh 
 curl -fsSL https://raw.githubusercontent.com/PROJECT-PS/PPS-CLI/main/install.sh | PPS_INSTALL_DIR=/usr/local/bin sh
 ```
 
-### Homebrew (첫 릴리즈 이후)
+### Homebrew
 
 ```sh
 brew tap PROJECT-PS/PPS-CLI https://github.com/PROJECT-PS/PPS-CLI.git
@@ -48,7 +48,7 @@ irm https://raw.githubusercontent.com/PROJECT-PS/PPS-CLI/main/install.ps1 | iex
 릴리즈 페이지에서 아키텍처에 맞는 `.deb` 파일을 받은 뒤 설치합니다.
 
 ```sh
-VERSION=v0.1.0
+VERSION=v0.2.0
 sudo apt install "./pps_${VERSION}_amd64.deb"
 ```
 
@@ -69,24 +69,33 @@ pps deploy
 
 pps run .
 pps submit 107 solution.cpp --language cpp17
+pps update
 ```
 
 전체 명령은 `pps --help`, 세부 명령은 `pps <command> --help`로 확인할 수 있습니다. 자세한 사용 흐름은 [명령어 안내](docs/commands.md)를 참고하세요.
 
-## 인증 정보와 설정 위치
+## 인증 정보와 업데이트 상태
 
-PPS 세션은 운영체제 사용자만 읽을 수 있는 `config.json`에 저장됩니다.
+PPS 세션과 마지막 업데이트 확인 시각은 운영체제 사용자만 읽을 수 있는 별도 파일에 저장됩니다.
 
-| 운영체제 | 릴리즈 `pps` |
-| --- | --- |
-| Linux / macOS | `~/.pps/config.json` |
-| Windows | `%APPDATA%\PPS\config.json` |
+| 운영체제 | 인증 정보 | 업데이트 확인 상태 |
+| --- | --- | --- |
+| Linux / macOS | `~/.pps/config.json` | `~/.pps/update-check.json` |
+| Windows | `%APPDATA%\PPS\config.json` | `%APPDATA%\PPS\update-check.json` |
 
-`pps auth status`에서 현재 사용 중인 정확한 경로를 확인할 수 있습니다. 로그아웃하면 저장된 토큰과 사용자 정보가 제거됩니다.
+`pps auth status`에서 현재 사용 중인 인증 파일 경로를 확인할 수 있습니다. 로그아웃하면 저장된 토큰과 사용자 정보가 제거됩니다. `update-check.json`에는 마지막 확인 시각만 기록되며 인증 정보는 포함되지 않습니다.
 
-## 업데이트와 무결성
+## 자동 업데이트
 
-Windows와 macOS/Linux 직접 설치는 설치 스크립트를 다시 실행하고, Homebrew는 `brew upgrade`를 사용하세요. 모든 GitHub Release에는 `checksums.txt`가 포함되며 설치 스크립트는 SHA-256 체크섬을 검증합니다.
+릴리즈 빌드는 명령 실행 시 최대 하루 한 번 최신 GitHub Release를 확인합니다. 확인은 2초 안에 끝나지 않거나 네트워크 오류가 나면 조용히 건너뛰며, 실패한 시도도 기록해 24시간 동안 다시 확인하지 않습니다. 새 버전이 있으면 stderr에 다음 명령을 안내합니다.
+
+```sh
+pps update
+```
+
+`pps update`는 현재 운영체제와 CPU에 맞는 릴리즈를 내려받고 `checksums.txt`의 SHA-256을 검증한 뒤 실행 파일을 교체합니다. Windows에서는 실행 중인 파일 잠금 때문에 명령이 종료된 직후 교체가 완료됩니다. development 프로필인 `pps-dev`와 `go run .`에서는 자동 확인과 자체 업데이트가 비활성화됩니다.
+
+`v0.1.0`에는 `pps update`가 없으므로 설치 스크립트나 Homebrew로 `v0.2.0`을 한 번 설치해야 합니다. 그 이후 버전부터는 `pps update`를 사용할 수 있습니다. 자세한 내용은 [설치 상세 문서](docs/installation.md)를 참고하세요.
 
 ## 지원 및 보안
 

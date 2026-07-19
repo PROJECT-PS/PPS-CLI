@@ -14,7 +14,7 @@ curl -fsSL https://raw.githubusercontent.com/PROJECT-PS/PPS-CLI/main/install.sh 
 
 ```sh
 curl -fsSL https://raw.githubusercontent.com/PROJECT-PS/PPS-CLI/main/install.sh | \
-  PPS_VERSION=v0.1.0 PPS_INSTALL_DIR="$HOME/bin" sh
+  PPS_VERSION=v0.2.0 PPS_INSTALL_DIR="$HOME/bin" sh
 ```
 
 Windows PowerShell:
@@ -23,9 +23,23 @@ Windows PowerShell:
 irm https://raw.githubusercontent.com/PROJECT-PS/PPS-CLI/main/install.ps1 | iex
 ```
 
-로컬 파일로 받은 경우 `./install.ps1 -Version v0.1.0 -InstallDir C:\Tools\PPS`처럼 실행할 수 있습니다.
+로컬 파일로 받은 경우 `./install.ps1 -Version v0.2.0 -InstallDir C:\Tools\PPS`처럼 실행할 수 있습니다.
 
-Windows는 이 PowerShell 설치 스크립트와 GitHub Release ZIP으로 독립 배포합니다. 업데이트할 때는 같은 명령을 다시 실행하면 기존 `pps.exe`를 최신 버전으로 교체합니다.
+Windows는 이 PowerShell 설치 스크립트와 GitHub Release ZIP으로 독립 배포합니다.
+
+## 업데이트
+
+`v0.2.0` 이상에서는 운영체제와 설치 방식에 관계없이 다음 명령으로 최신 릴리즈를 설치할 수 있습니다.
+
+```sh
+pps update
+```
+
+PPS는 명령 실행 시 하루 한 번만 최신 버전을 확인합니다. 네트워크 요청은 최대 2초이며 타임아웃이나 오류가 발생해도 명령 실행에는 영향을 주지 않습니다. 실패한 확인도 `update-check.json`에 시각을 기록해 24시간 동안 다시 시도하지 않습니다.
+
+업데이트 파일은 GitHub Release의 `checksums.txt`로 SHA-256을 확인합니다. Linux와 macOS는 검증된 실행 파일을 원자적으로 교체합니다. Windows는 실행 중인 `pps.exe`가 잠길 수 있으므로 새 파일을 검증한 뒤 백그라운드 작업이 명령 종료를 기다렸다가 교체합니다.
+
+설치 위치가 시스템 관리자만 쓸 수 있는 경로라면 권한 오류가 날 수 있습니다. 이 경우 설치 스크립트를 권한이 있는 경로에 다시 실행하거나 해당 설치 방식의 패키지 관리자 업데이트를 사용하세요. `v0.1.0` 사용자는 자체 업데이트 명령이 없으므로 위 자동 설치 방식으로 `v0.2.0`을 한 번 설치해야 합니다.
 
 ## 수동 설치
 

@@ -10,7 +10,7 @@ On macOS and Linux, the installer detects the operating system and CPU, download
 curl -fsSL https://raw.githubusercontent.com/PROJECT-PS/PPS-CLI/main/install.sh | sh
 ```
 
-Set `PPS_VERSION=v0.1.0` or `PPS_INSTALL_DIR="$HOME/bin"` to override the version or destination.
+Set `PPS_VERSION=v0.2.0` or `PPS_INSTALL_DIR="$HOME/bin"` to override the version or destination.
 
 On Windows PowerShell:
 
@@ -18,9 +18,23 @@ On Windows PowerShell:
 irm https://raw.githubusercontent.com/PROJECT-PS/PPS-CLI/main/install.ps1 | iex
 ```
 
-For a downloaded script, use parameters such as `./install.ps1 -Version v0.1.0 -InstallDir C:\Tools\PPS`.
+For a downloaded script, use parameters such as `./install.ps1 -Version v0.2.0 -InstallDir C:\Tools\PPS`.
 
-Windows is distributed independently through this PowerShell installer and GitHub Release ZIP files. Run the same command again to replace the installed `pps.exe` with the latest version.
+Windows is distributed independently through this PowerShell installer and GitHub Release ZIP files.
+
+## Updates
+
+Starting with `v0.2.0`, install the latest release on every supported platform with:
+
+```sh
+pps update
+```
+
+PPS checks for a new release at most once per day when a command runs. The network request is limited to two seconds. Timeouts and other errors do not affect the requested command, but the attempted check is still recorded in `update-check.json` so it is not repeated for 24 hours.
+
+The updater verifies the downloaded archive against the release's `checksums.txt`. Linux and macOS atomically replace the verified executable. On Windows, a background process waits for the running `pps.exe` to exit before replacing it.
+
+Self-update can fail when the executable is in an administrator-owned directory. In that case, rerun the installer with access to the destination or use the original package manager. Version `v0.1.0` did not have the update command, so install `v0.2.0` once using an installer before relying on self-update.
 
 ## Manual installation
 

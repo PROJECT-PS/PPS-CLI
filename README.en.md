@@ -24,7 +24,7 @@ curl -fsSL https://raw.githubusercontent.com/PROJECT-PS/PPS-CLI/main/install.sh 
 
 The default destination is `~/.local/bin/pps`. Set `PPS_INSTALL_DIR` to choose another directory.
 
-### Homebrew (after the first release)
+### Homebrew
 
 ```sh
 brew tap PROJECT-PS/PPS-CLI https://github.com/PROJECT-PS/PPS-CLI.git
@@ -44,7 +44,7 @@ The installer uses `%LOCALAPPDATA%\Programs\PPS` and adds it to the user `PATH`.
 Download the `.deb` matching your architecture from the release page:
 
 ```sh
-VERSION=v0.1.0
+VERSION=v0.2.0
 sudo apt install "./pps_${VERSION}_amd64.deb"
 ```
 
@@ -62,24 +62,33 @@ pps detail invocate 456
 pps deploy
 pps run .
 pps submit 107 solution.cpp --language cpp17
+pps update
 ```
 
 Run `pps --help` or `pps <command> --help` for contextual help. See the [command guide](docs/commands.en.md) for complete workflows.
 
-## Authentication data
+## Authentication and update state
 
-The PPS session is stored in a user-only `config.json` file.
+The PPS session and last update-check time are stored in separate user-only files.
 
-| Operating system | Release `pps` |
-| --- | --- |
-| Linux / macOS | `~/.pps/config.json` |
-| Windows | `%APPDATA%\PPS\config.json` |
+| Operating system | Authentication | Update-check state |
+| --- | --- | --- |
+| Linux / macOS | `~/.pps/config.json` | `~/.pps/update-check.json` |
+| Windows | `%APPDATA%\PPS\config.json` | `%APPDATA%\PPS\update-check.json` |
 
-`pps auth status` prints the exact active location. Logging out removes the stored token and user identity.
+`pps auth status` prints the active authentication path. Logging out removes the stored token and user identity. `update-check.json` stores only the last check time and contains no credentials.
 
-## Updates and integrity
+## Automatic updates
 
-For direct Windows and macOS/Linux installations, run the installer again. Use `brew upgrade` for Homebrew. Every GitHub Release contains `checksums.txt`, and the installers verify SHA-256 before installing.
+Release builds check the latest GitHub Release at most once every 24 hours when a command runs. A timeout or network failure is silently ignored after two seconds and still suppresses another check for 24 hours. When a newer release exists, PPS prints a reminder to stderr:
+
+```sh
+pps update
+```
+
+`pps update` downloads the archive for the current platform, verifies it against `checksums.txt`, and replaces the executable. Windows finishes replacement after the command exits because a running executable may be locked. Automatic checks and self-update are disabled for the `pps-dev` and `go run .` development profiles.
+
+Version `v0.1.0` did not include `pps update`; install `v0.2.0` once through the installer or Homebrew. Later releases can be installed with `pps update`. See the [detailed installation guide](docs/installation.en.md).
 
 ## Support and security
 

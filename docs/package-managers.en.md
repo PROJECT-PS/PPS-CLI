@@ -33,11 +33,13 @@ Windows is managed separately without package-manager registration. Each release
 irm https://raw.githubusercontent.com/PROJECT-PS/PPS-CLI/main/install.ps1 | iex
 ```
 
-Run the same command to update. See the [detailed installation guide](installation.en.md) for manual installation and removal.
+After the first install, use `pps update` for later releases or rerun the installer. See the [detailed installation guide](installation.en.md) for manual installation and removal.
 
 ## APT, Debian, and Ubuntu
 
 Release `.deb` files support `apt install ./pps_<version>_<arch>.deb`. A plain `apt install pps` requires a signed package index.
+
+Executables installed from a `.deb` are normally owned by root, so `pps update` may not have permission to replace them. Download the next `.deb` and run `sudo apt install ./<file>.deb` in that case.
 
 - Self-hosted: generate signed metadata with [reprepro](https://wiki.debian.org/DebianRepository/SetupWithReprepro) and publish it over HTTPS.
 - Ubuntu PPA: [Launchpad PPAs](https://documentation.ubuntu.com/launchpad/user/reference/packaging/ppas/ppa/) require Debian source-package uploads rather than prebuilt binaries, which conflicts with the current private-source policy.

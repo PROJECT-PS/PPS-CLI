@@ -4,6 +4,17 @@
 
 Invalid input prints contextual command help. Add `--json` to API-oriented commands for machine-readable output.
 
+## Version and updates
+
+```sh
+pps --version
+pps update
+```
+
+Release builds check for a new release at most once every 24 hours when a command runs and suggest `pps update` when one exists. The request stops after two seconds; both successful and failed attempts delay the next check for 24 hours. Notices go to stderr and do not change `--json` stdout.
+
+`pps update` downloads the platform archive and `checksums.txt`, verifies SHA-256, and replaces the current executable. Checks and updates are disabled in the development profile.
+
 ## Authentication
 
 ```sh
