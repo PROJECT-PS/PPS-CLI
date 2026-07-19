@@ -76,6 +76,8 @@ pps run --docker
 
 터미널에서는 로컬 직접 실행과 Docker 중 하나를 선택합니다. `--docker` 또는 `--docker=false`를 명시하면 선택 질문을 건너뜁니다.
 
+로컬 직접 실행 중 `testlib.h`가 필요하지만 탐색 경로에 없으면 공개 PPS-ASSETS 저장소를 설정 폴더의 `PPS-ASSETS` 캐시에 자동으로 내려받아 사용합니다. 별도 파일을 사용하려면 `--testlib-dir` 또는 `PPS_TESTLIB_DIR`을 지정하세요. Docker 이미지는 Linux AMD64와 ARM64를 모두 제공하므로 Intel/AMD PC와 Apple Silicon에서 각 환경에 맞는 이미지를 자동 선택합니다.
+
 ## 제출
 
 ```sh

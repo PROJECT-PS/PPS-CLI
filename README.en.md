@@ -44,7 +44,7 @@ The installer uses `%LOCALAPPDATA%\Programs\PPS` and adds it to the user `PATH`.
 Download the `.deb` matching your architecture from the release page:
 
 ```sh
-VERSION=v0.2.0
+VERSION=v0.3.0
 sudo apt install "./pps_${VERSION}_amd64.deb"
 ```
 
@@ -73,12 +73,12 @@ Problem `#1` in these examples is the public **a + b** problem: print the sum of
 
 The PPS session and last update-check time are stored in separate user-only files.
 
-| Operating system | Authentication | Update-check state |
-| --- | --- | --- |
-| Linux / macOS | `~/.pps/config.json` | `~/.pps/update-check.json` |
-| Windows | `%APPDATA%\PPS\config.json` | `%APPDATA%\PPS\update-check.json` |
+| Operating system | Authentication | Update-check state | `testlib.h` cache |
+| --- | --- | --- | --- |
+| Linux / macOS | `~/.pps/config.json` | `~/.pps/update-check.json` | `~/.pps/PPS-ASSETS` |
+| Windows | `%APPDATA%\PPS\config.json` | `%APPDATA%\PPS\update-check.json` | `%APPDATA%\PPS\PPS-ASSETS` |
 
-`pps auth status` prints the active authentication path. Logging out removes the stored token and user identity. `update-check.json` stores only the last check time and contains no credentials.
+`pps auth status` prints the active authentication path. Logging out removes the stored token and user identity. `update-check.json` stores only the last check time and contains no credentials. When native execution needs `testlib.h`, PPS CLI automatically downloads the public PPS-ASSETS repository into the cache path above.
 
 ## Automatic updates
 

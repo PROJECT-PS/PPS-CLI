@@ -2,6 +2,13 @@
 
 This document records user-visible PPS CLI changes. Versions follow [Semantic Versioning](https://semver.org/).
 
+## [Unreleased]
+
+### Added
+
+- Automatic per-profile PPS-ASSETS cache when native execution needs `testlib.h`
+- Linux AMD64 and ARM64 support for the PPS CLI runner Docker image
+
 ## [v0.3.0] - 2026-07-20
 
 ### Added

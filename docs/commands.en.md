@@ -74,6 +74,8 @@ Native local invocation has no security sandbox; only run trusted repositories. 
 
 In a terminal, choose native or Docker execution from a numbered menu. Pass `--docker` or `--docker=false` to skip the prompt.
 
+When native execution needs `testlib.h` and no existing copy can be found, PPS CLI automatically downloads the public PPS-ASSETS repository into the profile config directory. Use `--testlib-dir` or `PPS_TESTLIB_DIR` to override it. The Docker image publishes both Linux AMD64 and ARM64 variants, so Docker selects the matching image on Intel/AMD systems and Apple Silicon.
+
 ## Submissions
 
 ```sh

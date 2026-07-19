@@ -48,7 +48,7 @@ irm https://raw.githubusercontent.com/PROJECT-PS/PPS-CLI/main/install.ps1 | iex
 릴리즈 페이지에서 아키텍처에 맞는 `.deb` 파일을 받은 뒤 설치합니다.
 
 ```sh
-VERSION=v0.2.0
+VERSION=v0.3.0
 sudo apt install "./pps_${VERSION}_amd64.deb"
 ```
 
@@ -80,12 +80,12 @@ pps update
 
 PPS 세션과 마지막 업데이트 확인 시각은 운영체제 사용자만 읽을 수 있는 별도 파일에 저장됩니다.
 
-| 운영체제 | 인증 정보 | 업데이트 확인 상태 |
-| --- | --- | --- |
-| Linux / macOS | `~/.pps/config.json` | `~/.pps/update-check.json` |
-| Windows | `%APPDATA%\PPS\config.json` | `%APPDATA%\PPS\update-check.json` |
+| 운영체제 | 인증 정보 | 업데이트 확인 상태 | `testlib.h` 캐시 |
+| --- | --- | --- | --- |
+| Linux / macOS | `~/.pps/config.json` | `~/.pps/update-check.json` | `~/.pps/PPS-ASSETS` |
+| Windows | `%APPDATA%\PPS\config.json` | `%APPDATA%\PPS\update-check.json` | `%APPDATA%\PPS\PPS-ASSETS` |
 
-`pps auth status`에서 현재 사용 중인 인증 파일 경로를 확인할 수 있습니다. 로그아웃하면 저장된 토큰과 사용자 정보가 제거됩니다. `update-check.json`에는 마지막 확인 시각만 기록되며 인증 정보는 포함되지 않습니다.
+`pps auth status`에서 현재 사용 중인 인증 파일 경로를 확인할 수 있습니다. 로그아웃하면 저장된 토큰과 사용자 정보가 제거됩니다. `update-check.json`에는 마지막 확인 시각만 기록되며 인증 정보는 포함되지 않습니다. 로컬 실행에 `testlib.h`가 필요하면 PPS CLI가 공개 PPS-ASSETS 저장소를 위 캐시 경로에 자동으로 내려받습니다.
 
 ## 자동 업데이트
 

@@ -2,6 +2,13 @@
 
 이 문서는 사용자에게 영향을 주는 PPS CLI 변경 사항을 기록합니다. 버전은 [Semantic Versioning](https://semver.org/lang/ko/)을 따릅니다.
 
+## [미출시]
+
+### 추가
+
+- 로컬 실행에 필요한 `testlib.h`가 없을 때 프로필별 설정 폴더에 PPS-ASSETS 자동 캐시
+- PPS CLI runner Docker 이미지의 Linux AMD64 및 ARM64 지원
+
 ## [v0.3.0] - 2026-07-20
 
 ### 추가
