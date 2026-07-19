@@ -2,7 +2,7 @@
 
 이 문서는 사용자에게 영향을 주는 PPS CLI 변경 사항을 기록합니다. 버전은 [Semantic Versioning](https://semver.org/lang/ko/)을 따릅니다.
 
-## [0.1.0] - 출시 예정
+## [v0.1.0] - 2026-07-19
 
 ### 추가
 

@@ -2,7 +2,7 @@
 
 This document records user-visible PPS CLI changes. Versions follow [Semantic Versioning](https://semver.org/).
 
-## [0.1.0] - Unreleased
+## [v0.1.0] - 2026-07-19
 
 ### Added
 

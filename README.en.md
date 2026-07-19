@@ -39,24 +39,16 @@ irm https://raw.githubusercontent.com/PROJECT-PS/PPS-CLI/main/install.ps1 | iex
 
 The installer uses `%LOCALAPPDATA%\Programs\PPS` and adds it to the user `PATH`.
 
-### WinGet (after official registration)
-
-The following command will work after acceptance into the official community repository:
-
-```powershell
-winget install --id PROJECT-PS.PPS --exact
-```
-
 ### Debian / Ubuntu
 
 Download the `.deb` matching your architecture from the release page:
 
 ```sh
-VERSION=0.1.0
+VERSION=v0.1.0
 sudo apt install "./pps_${VERSION}_amd64.deb"
 ```
 
-See [package manager status](docs/package-managers.en.md) and the [detailed installation guide](docs/installation.en.md) for manual installation, verification, and removal.
+See [distribution channel status](docs/package-managers.en.md) and the [detailed installation guide](docs/installation.en.md) for manual installation, verification, and removal.
 
 ## Quick start
 
@@ -87,7 +79,7 @@ The PPS session is stored in a user-only `config.json` file.
 
 ## Updates and integrity
 
-Run the installer again or use your package manager's upgrade command. Every GitHub Release contains `checksums.txt`, and the installers verify SHA-256 before installing.
+For direct Windows and macOS/Linux installations, run the installer again. Use `brew upgrade` for Homebrew. Every GitHub Release contains `checksums.txt`, and the installers verify SHA-256 before installing.
 
 ## Support and security
 

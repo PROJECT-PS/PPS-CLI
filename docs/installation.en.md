@@ -10,7 +10,7 @@ On macOS and Linux, the installer detects the operating system and CPU, download
 curl -fsSL https://raw.githubusercontent.com/PROJECT-PS/PPS-CLI/main/install.sh | sh
 ```
 
-Set `PPS_VERSION=0.1.0` or `PPS_INSTALL_DIR="$HOME/bin"` to override the version or destination.
+Set `PPS_VERSION=v0.1.0` or `PPS_INSTALL_DIR="$HOME/bin"` to override the version or destination.
 
 On Windows PowerShell:
 
@@ -18,7 +18,9 @@ On Windows PowerShell:
 irm https://raw.githubusercontent.com/PROJECT-PS/PPS-CLI/main/install.ps1 | iex
 ```
 
-For a downloaded script, use parameters such as `./install.ps1 -Version 0.1.0 -InstallDir C:\Tools\PPS`.
+For a downloaded script, use parameters such as `./install.ps1 -Version v0.1.0 -InstallDir C:\Tools\PPS`.
+
+Windows is distributed independently through this PowerShell installer and GitHub Release ZIP files. Run the same command again to replace the installed `pps.exe` with the latest version.
 
 ## Manual installation
 
@@ -28,9 +30,9 @@ Archive names follow `pps_<version>_<os>_<arch>`, with `.tar.gz` on Linux/macOS 
 
 ## Removal
 
-- Direct installer: remove the installed `pps` executable.
+- macOS/Linux direct installer: remove the installed `pps` executable.
+- Windows: delete the default `%LOCALAPPDATA%\Programs\PPS` directory and remove that entry from the user `PATH`. If you used `-InstallDir`, remove that directory instead.
 - Homebrew: `brew uninstall PROJECT-PS/PPS-CLI/pps`, then optionally `brew untap PROJECT-PS/PPS-CLI`
-- WinGet: `winget uninstall --id PROJECT-PS.PPS`
 - Debian/Ubuntu: `sudo apt remove pps`
 
 Authentication data remains until `~/.pps` on Linux/macOS or `%APPDATA%\PPS` on Windows is removed.

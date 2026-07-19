@@ -1,14 +1,14 @@
-# Package manager status and official registration
+# Installation and distribution channels
 
 [한국어](package-managers.md)
 
 ## Current coverage
 
-| Channel | Generated here | Remaining official-registration work |
+| Channel | Coverage | Operation |
 | --- | --- | --- |
-| Homebrew tap | `Formula/pps.rb` | None; provide this repository's Git URL on the first tap |
+| Homebrew tap | `Formula/pps.rb` | Provide this repository's Git URL on the first tap |
 | Homebrew Core | Not applicable | Binary-only projects without public source do not meet Core policy |
-| WinGet | Versioned YAML manifests | Submit and pass review in `microsoft/winget-pkgs` |
+| Direct Windows install | AMD64 and ARM64 ZIP files plus `install.ps1` | Distributed independently through GitHub Releases |
 | Debian/Ubuntu `.deb` | AMD64 and ARM64 packages | Direct install from each release |
 | `apt install pps` repository | Not hosted yet | Signed APT repository, PPA, or distribution packaging required |
 
@@ -25,9 +25,15 @@ The release process updates `Formula/pps.rb` with immutable URLs and SHA-256 val
 
 Homebrew's [Core acceptance policy](https://docs.brew.sh/Acceptable-Formulae) requires open-source software that can be built from source and rejects binary-only formulae. The project should therefore keep its own tap while its source remains private. A macOS-only submission to `homebrew/cask`, which permits upstream binaries, can be evaluated separately but would not replace this tap's Linux support.
 
-## WinGet
+## Windows
 
-Each release generates AMD64 and ARM64 manifests under `packaging/winget`. Validate them with `winget validate`, test them in Windows Sandbox, and submit a PR to `microsoft/winget-pkgs` using Microsoft's [official submission process](https://learn.microsoft.com/windows/package-manager/package/repository). [WinGetCreate](https://learn.microsoft.com/windows/package-manager/package/manifest) can automate manifest generation and PR submission.
+Windows is managed separately without package-manager registration. Each release publishes AMD64 and ARM64 ZIP files to GitHub Releases. `install.ps1` detects the native architecture, downloads the archive, verifies SHA-256, installs `pps.exe`, and updates the user `PATH`.
+
+```powershell
+irm https://raw.githubusercontent.com/PROJECT-PS/PPS-CLI/main/install.ps1 | iex
+```
+
+Run the same command to update. See the [detailed installation guide](installation.en.md) for manual installation and removal.
 
 ## APT, Debian, and Ubuntu
 

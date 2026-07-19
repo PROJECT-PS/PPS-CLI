@@ -14,7 +14,7 @@ curl -fsSL https://raw.githubusercontent.com/PROJECT-PS/PPS-CLI/main/install.sh 
 
 ```sh
 curl -fsSL https://raw.githubusercontent.com/PROJECT-PS/PPS-CLI/main/install.sh | \
-  PPS_VERSION=0.1.0 PPS_INSTALL_DIR="$HOME/bin" sh
+  PPS_VERSION=v0.1.0 PPS_INSTALL_DIR="$HOME/bin" sh
 ```
 
 Windows PowerShell:
@@ -23,7 +23,9 @@ Windows PowerShell:
 irm https://raw.githubusercontent.com/PROJECT-PS/PPS-CLI/main/install.ps1 | iex
 ```
 
-로컬 파일로 받은 경우 `./install.ps1 -Version 0.1.0 -InstallDir C:\Tools\PPS`처럼 실행할 수 있습니다.
+로컬 파일로 받은 경우 `./install.ps1 -Version v0.1.0 -InstallDir C:\Tools\PPS`처럼 실행할 수 있습니다.
+
+Windows는 이 PowerShell 설치 스크립트와 GitHub Release ZIP으로 독립 배포합니다. 업데이트할 때는 같은 명령을 다시 실행하면 기존 `pps.exe`를 최신 버전으로 교체합니다.
 
 ## 수동 설치
 
@@ -45,9 +47,9 @@ Debian/Ubuntu는 릴리즈의 `pps_<version>_amd64.deb` 또는 `pps_<version>_ar
 
 ## 삭제
 
-- 설치 스크립트: 설치된 `pps` 파일을 삭제합니다.
+- macOS/Linux 설치 스크립트: 설치된 `pps` 파일을 삭제합니다.
+- Windows: 기본 설치 경로 `%LOCALAPPDATA%\Programs\PPS`를 삭제하고, 사용자 `PATH`에서 같은 경로를 제거합니다. 별도 `-InstallDir`을 사용했다면 해당 경로를 삭제합니다.
 - Homebrew: `brew uninstall PROJECT-PS/PPS-CLI/pps` 후 필요하면 `brew untap PROJECT-PS/PPS-CLI`
-- WinGet: `winget uninstall --id PROJECT-PS.PPS`
 - Debian/Ubuntu: `sudo apt remove pps`
 
 인증 정보까지 삭제하려면 Linux/macOS에서 `~/.pps`, Windows에서 `%APPDATA%\PPS`를 별도로 삭제하세요. 이 작업은 로그아웃 정보와 세션을 복구할 수 없게 삭제합니다.

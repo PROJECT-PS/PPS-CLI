@@ -15,7 +15,7 @@ jobs:
       - name: Validate version and shell installer
         shell: bash
         run: |
-          grep -Eq '^[0-9]+\.[0-9]+\.[0-9]+$' VERSION
+          grep -Eq '^v[0-9]+\.[0-9]+\.[0-9]+$' VERSION
           bash -n install.sh
       - name: Check required distribution files
         shell: bash

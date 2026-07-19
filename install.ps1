@@ -19,14 +19,14 @@ $architecture = switch ($nativeArchitecture) {
 
 if (-not $Version) {
     $release = Invoke-RestMethod -Headers @{ "User-Agent" = "pps-installer" } -Uri "https://api.github.com/repos/$Repository/releases/latest"
-    $Version = $release.tag_name -replace '^v', ''
+    $Version = $release.tag_name
 }
-if ($Version -notmatch '^\d+\.\d+\.\d+$') {
+if ($Version -notmatch '^v\d+\.\d+\.\d+$') {
     throw "Invalid version: $Version"
 }
 
 $archive = "pps_${Version}_windows_${architecture}.zip"
-$baseUrl = "https://github.com/$Repository/releases/download/v$Version"
+$baseUrl = "https://github.com/$Repository/releases/download/$Version"
 $tempDir = Join-Path ([System.IO.Path]::GetTempPath()) ("pps-install-" + [System.Guid]::NewGuid().ToString("N"))
 New-Item -ItemType Directory -Path $tempDir | Out-Null
 

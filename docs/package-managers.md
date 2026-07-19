@@ -1,14 +1,14 @@
-# 패키지 관리자 배포 현황과 공식 등록
+# 설치 및 배포 채널 현황
 
 [English](package-managers.en.md)
 
 ## 현재 제공 범위
 
-| 방식 | 이 저장소에서 자동 생성 | 공식 등록에 필요한 추가 작업 |
+| 방식 | 제공 범위 | 운영 방식 |
 | --- | --- | --- |
-| Homebrew tap | `Formula/pps.rb` | 없음. 최초 tap 때 이 저장소의 Git URL 지정 |
+| Homebrew tap | `Formula/pps.rb` | 최초 tap 때 이 저장소의 Git URL 지정 |
 | Homebrew Core | 해당 없음 | 바이너리 전용 비공개 소스 프로젝트는 Core 정책상 부적합 |
-| WinGet | 버전별 YAML manifest | `microsoft/winget-pkgs`에 PR 제출 및 승인 |
+| Windows 직접 설치 | AMD64, ARM64 ZIP과 `install.ps1` | GitHub Release를 통해 독립 배포 |
 | Debian/Ubuntu `.deb` | AMD64, ARM64 패키지 | 릴리즈 파일 직접 설치 가능 |
 | `apt install pps` 저장소 | 아직 미호스팅 | GPG 서명 APT 저장소 또는 PPA/배포판 공식 패키징 필요 |
 
@@ -25,15 +25,15 @@ Homebrew의 [tap 생성 공식 문서](https://docs.brew.sh/How-to-Create-and-Ma
 
 `homebrew/core`는 [공식 허용 정책](https://docs.brew.sh/Acceptable-Formulae)상 오픈 소스이고 소스에서 빌드 가능한 formula를 요구하며 바이너리 전용 formula를 받지 않습니다. 현재처럼 공개 소스가 없는 PPS CLI는 자체 tap을 유지하는 것이 적합합니다. macOS 전용 공식 등록이 필요하면 바이너리 배포를 허용하는 `homebrew/cask`를 별도로 검토할 수 있지만, Linux 설치까지 함께 제공하는 현재 tap을 대체하지는 않습니다.
 
-## WinGet
+## Windows
 
-릴리즈가 생성되면 `packaging/winget` 아래에 AMD64와 ARM64 설치 URL 및 SHA-256이 포함된 manifest가 생성됩니다. 공식 `winget install PROJECT-PS.PPS`를 활성화하려면 다음 작업이 남습니다.
+Windows는 패키지 관리자에 등록하지 않고 별도 관리합니다. 릴리즈마다 AMD64와 ARM64용 ZIP을 GitHub Release에 게시하며, `install.ps1`이 운영체제 아키텍처 감지, 다운로드, SHA-256 검증, 설치 및 사용자 `PATH` 등록을 처리합니다.
 
-1. Windows에서 `winget validate <manifest-directory>`와 Sandbox 설치 테스트를 수행합니다.
-2. [Microsoft WinGet 제출 안내](https://learn.microsoft.com/windows/package-manager/package/repository)에 따라 `microsoft/winget-pkgs` 저장소에 manifest PR을 제출합니다.
-3. 자동 보안 검사와 검토 승인을 기다립니다.
+```powershell
+irm https://raw.githubusercontent.com/PROJECT-PS/PPS-CLI/main/install.ps1 | iex
+```
 
-`wingetcreate`로 생성 및 PR 제출을 자동화할 수도 있습니다. 자세한 형식은 [manifest 생성 공식 문서](https://learn.microsoft.com/windows/package-manager/package/manifest)를 참고하세요.
+업데이트할 때도 같은 명령을 실행합니다. 직접 설치하거나 삭제하는 방법은 [설치 상세 안내](installation.md)를 참고하세요.
 
 ## APT / Debian / Ubuntu
 

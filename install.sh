@@ -27,14 +27,13 @@ esac
 
 if [ -z "$version" ]; then
   latest_url=$(curl -fsSL -o /dev/null -w '%{url_effective}' "https://github.com/$repository/releases/latest") || fail "could not resolve the latest release"
-  tag=${latest_url##*/}
-  version=${tag#v}
+  version=${latest_url##*/}
 fi
 
-printf '%s\n' "$version" | grep -Eq '^[0-9]+\.[0-9]+\.[0-9]+$' || fail "invalid version: $version"
+printf '%s\n' "$version" | grep -Eq '^v[0-9]+\.[0-9]+\.[0-9]+$' || fail "invalid version: $version"
 
 archive="pps_${version}_${os}_${arch}.tar.gz"
-base_url="https://github.com/$repository/releases/download/v${version}"
+base_url="https://github.com/$repository/releases/download/${version}"
 tmp_dir=$(mktemp -d 2>/dev/null || mktemp -d -t pps-install) || fail "could not create a temporary directory"
 trap 'rm -rf "$tmp_dir"' EXIT HUP INT TERM
 
