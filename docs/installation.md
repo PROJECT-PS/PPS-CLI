@@ -14,7 +14,7 @@ curl -fsSL https://raw.githubusercontent.com/PROJECT-PS/PPS-CLI/main/install.sh 
 
 ```sh
 curl -fsSL https://raw.githubusercontent.com/PROJECT-PS/PPS-CLI/main/install.sh | \
-  PPS_VERSION=v0.3.0 PPS_INSTALL_DIR="$HOME/bin" sh
+  PPS_VERSION=v0.3.1 PPS_INSTALL_DIR="$HOME/bin" sh
 ```
 
 Windows PowerShell:
@@ -23,7 +23,7 @@ Windows PowerShell:
 irm https://raw.githubusercontent.com/PROJECT-PS/PPS-CLI/main/install.ps1 | iex
 ```
 
-로컬 파일로 받은 경우 `./install.ps1 -Version v0.3.0 -InstallDir C:\Tools\PPS`처럼 실행할 수 있습니다.
+로컬 파일로 받은 경우 `./install.ps1 -Version v0.3.1 -InstallDir C:\Tools\PPS`처럼 실행할 수 있습니다.
 
 Windows는 이 PowerShell 설치 스크립트와 GitHub Release ZIP으로 독립 배포합니다.
 

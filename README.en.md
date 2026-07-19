@@ -44,7 +44,7 @@ The installer uses `%LOCALAPPDATA%\Programs\PPS` and adds it to the user `PATH`.
 Download the `.deb` matching your architecture from the release page:
 
 ```sh
-VERSION=v0.3.0
+VERSION=v0.3.1
 sudo apt install "./pps_${VERSION}_amd64.deb"
 ```
 

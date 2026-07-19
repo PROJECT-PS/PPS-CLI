@@ -48,7 +48,7 @@ irm https://raw.githubusercontent.com/PROJECT-PS/PPS-CLI/main/install.ps1 | iex
 릴리즈 페이지에서 아키텍처에 맞는 `.deb` 파일을 받은 뒤 설치합니다.
 
 ```sh
-VERSION=v0.3.0
+VERSION=v0.3.1
 sudo apt install "./pps_${VERSION}_amd64.deb"
 ```
 
