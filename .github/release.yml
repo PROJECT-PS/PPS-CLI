@@ -1,0 +1,10 @@
+changelog:
+  categories:
+    - title: 새로운 기능 / Features
+      labels: [enhancement]
+    - title: 수정 / Fixes
+      labels: [bug]
+    - title: 문서 및 기타 / Documentation and maintenance
+      labels: [documentation, maintenance]
+  exclude:
+    labels: [skip-changelog]

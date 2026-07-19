@@ -1,0 +1,8 @@
+PPS CLI
+Copyright (c) 2026 PROJECT-PS
+
+This repository distributes PPS CLI release binaries, installation helpers,
+package metadata, and user documentation. The application source code is
+maintained separately and is not included in this public repository.
+
+Third-party notices are listed in THIRD_PARTY_NOTICES.md.

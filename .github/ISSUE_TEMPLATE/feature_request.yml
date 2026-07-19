@@ -1,0 +1,21 @@
+name: 기능 제안 / Feature request
+description: 새로운 기능이나 사용성 개선을 제안해 주세요.
+title: "[Feature] "
+labels: [enhancement]
+body:
+  - type: textarea
+    attributes:
+      label: 해결하려는 문제
+      description: 현재 어떤 작업이 어렵거나 불가능한지 설명해 주세요.
+    validations:
+      required: true
+  - type: textarea
+    attributes:
+      label: 제안하는 동작
+      description: 원하는 명령 형식과 출력 예시가 있다면 포함해 주세요.
+    validations:
+      required: true
+  - type: textarea
+    attributes:
+      label: 대안
+      description: 현재 사용 중인 우회 방법이 있다면 알려주세요.
