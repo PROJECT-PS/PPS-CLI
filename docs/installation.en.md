@@ -10,7 +10,7 @@ On macOS and Linux, the installer detects the operating system and CPU, download
 curl -fsSL https://raw.githubusercontent.com/PROJECT-PS/PPS-CLI/main/install.sh | sh
 ```
 
-Set `PPS_VERSION=v0.3.1` or `PPS_INSTALL_DIR="$HOME/bin"` to override the version or destination.
+Set `PPS_VERSION=v0.4.0` or `PPS_INSTALL_DIR="$HOME/bin"` to override the version or destination.
 
 On Windows PowerShell:
 
@@ -18,7 +18,7 @@ On Windows PowerShell:
 irm https://raw.githubusercontent.com/PROJECT-PS/PPS-CLI/main/install.ps1 | iex
 ```
 
-For a downloaded script, use parameters such as `./install.ps1 -Version v0.3.1 -InstallDir C:\Tools\PPS`.
+For a downloaded script, use parameters such as `./install.ps1 -Version v0.4.0 -InstallDir C:\Tools\PPS`.
 
 Windows is distributed independently through this PowerShell installer and GitHub Release ZIP files.
 

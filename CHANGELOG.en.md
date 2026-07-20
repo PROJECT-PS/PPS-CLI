@@ -2,6 +2,20 @@
 
 This document records user-visible PPS CLI changes. Versions follow [Semantic Versioning](https://semver.org/).
 
+## [v0.4.0] - 2026-07-20
+
+### Added
+
+- `pps create --local` for an authentication-free local Git package with an initial empty commit
+- A complete PPS CLI workbook covering problem authoring, local testing, remote validation/deployment, and submissions
+
+### Changed
+
+- Commands other than `pps auth` and `pps create` now use options and defaults without selection menus
+- Submission-list `--result` filters now use names such as `all`, `ac`, `wa`, and `tle` instead of internal numbers
+- Per-command help now explains non-interactive defaults, options, and copyable examples
+- Authentication-free behavior for `pps run` and `pps create --local` is documented and tested
+
 ## [v0.3.1] - 2026-07-20
 
 ### Added

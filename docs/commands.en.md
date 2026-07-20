@@ -2,7 +2,9 @@
 
 [한국어](commands.md)
 
-Invalid input prints contextual command help. Add `--json` to API-oriented commands for machine-readable output.
+Invalid input prints contextual command help. Add `--json` to supported API-oriented commands for machine-readable output. Only `pps auth` and `pps create` may prompt; every other command uses arguments, options, or documented defaults.
+
+The [Korean workbook](commands.md) includes a complete first-problem tutorial covering the repository layout, `config.json`, generators, reference and intentionally wrong solutions, local/Docker testing, remote validation, deployment, and submissions.
 
 ## Version and updates
 
@@ -31,6 +33,7 @@ pps auth logout
 
 ```sh
 pps create
+pps create --local --name two-sum
 pps problem 1
 pps clone 1
 pps clone nickname/two-sum
@@ -38,9 +41,11 @@ pps list problem
 pps search two sum
 ```
 
-`pps create` presents numbered choices for template, owner, GitHub repository visibility, and post-deployment problem visibility. Supplying the corresponding flags skips those prompts.
+Remote `pps create` presents numbered choices for omitted settings and requires PPS authentication plus a linked GitHub account. Supplying `--name`, `--description`, `--template`, `--account-id`, `--private`, and `--public-solvable` makes those settings explicit.
 
-Problem `#1` is the public **a + b** example: print the sum of two integers (1 second, 128 MiB, sample `1 2` → `3`). `pps problem 1` lets you choose a statement when multiple languages are available. Clone offers HTTPS, SSH, and GitHub CLI transports. Repositories cloned by PPS store their problem ID in `.git/pps.json`, allowing later commands to infer it.
+`pps create --local --name two-sum` works without authentication. It creates `<current-directory>/two-sum`, initializes a local Git repository on `main`, and records an empty initial commit. It does not create a PPS or GitHub repository. Only `--name` is accepted with `--local`; add a Git remote later if needed.
+
+Problem `#1` is the public **a + b** example: print the sum of two integers (1 second, 128 MiB, sample `1 2` → `3`). `pps problem 1` prints all statements; use `--statement English` for one exact label. Clone uses HTTPS by default; select SSH with `--ssh` or the GitHub CLI with `--gh`. Repositories cloned by PPS store their problem ID in `.git/pps.json`, allowing later commands to infer it.
 
 ## Git synchronization
 
@@ -72,7 +77,7 @@ pps run --docker
 
 Native local invocation has no security sandbox; only run trusted repositories. Docker mode uses the network-disabled PPS CLI runner container.
 
-In a terminal, choose native or Docker execution from a numbered menu. Pass `--docker` or `--docker=false` to skip the prompt.
+`pps run` never requires PPS authentication and never prompts for an execution mode. Native mode is the default; pass `--docker` explicitly for the runner container. Use `--keep-work` to preserve generated inputs, outputs, and build files for debugging.
 
 When native execution needs `testlib.h` and no existing copy can be found, PPS CLI automatically downloads the public PPS-ASSETS repository into the profile config directory. Use `--testlib-dir` or `PPS_TESTLIB_DIR` to override it. The Docker image publishes both Linux AMD64 and ARM64 variants, so Docker selects the matching image on Intel/AMD systems and Apple Silicon.
 
@@ -80,13 +85,30 @@ When native execution needs `testlib.h` and no existing copy can be found, PPS C
 
 ```sh
 pps submit 1 solution.cpp
-pps edu_submit 10 solution.py
-pps contest_submit 20 Main.java
+pps edu_submit 10 solution.py --lecture-id 3 --problem-id 1
+pps contest_submit 20 Main.java --problem-index 0
 pps list submit 1
+pps list submit 1 --result ac
 ```
 
-General submission offers all eight supported languages and preselects the language inferred from the file extension. Education submission can select a visible course problem when lecture/problem IDs are omitted. Contest submission can select a current contest problem when its index is omitted. Existing full-ID syntax and `--language` remain available for automation.
+Submission never opens a language or problem menu. General submission infers `c11`, `cpp17`, `py3`, or `java8` from common extensions; use `--language` to override it or handle an unknown extension. Education submission requires `--lecture-id` and `--problem-id`. Contest submission requires the zero-based `--problem-index` (`0` is problem A).
 
-All three submission-list commands expose the same 11 result filters as the web UI. Education and contest lists also provide dynamic problem filters; explicit flags skip these menus.
+All submission-list commands accept textual, case-insensitive `--result` values and map them to the API internally. Numeric result codes are intentionally neither shown nor accepted.
+
+| Value | Meaning |
+| --- | --- |
+| `all` | All results |
+| `ac` | Accepted |
+| `wrong` | Every non-accepted result |
+| `wa` | Wrong answer |
+| `partial` | Partial score |
+| `tle` | Time limit exceeded |
+| `mle` | Memory limit exceeded |
+| `re` | Runtime error |
+| `segfault` | Segmentation fault |
+| `ce` | Compile error |
+| `ole` | Output limit exceeded |
+
+Education lists use optional `--lecture-id` and `--problem-id` filters. Contest lists use optional `--problem-index`. Omitting these filters means all problems and does not open a menu.
 
 Use `pps <command> --help` as the authoritative reference for current flags and syntax.

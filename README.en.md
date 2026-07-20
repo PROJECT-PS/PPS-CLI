@@ -44,7 +44,7 @@ The installer uses `%LOCALAPPDATA%\Programs\PPS` and adds it to the user `PATH`.
 Download the `.deb` matching your architecture from the release page:
 
 ```sh
-VERSION=v0.3.1
+VERSION=v0.4.0
 sudo apt install "./pps_${VERSION}_amd64.deb"
 ```
 
@@ -53,21 +53,27 @@ See [distribution channel status](docs/package-managers.en.md) and the [detailed
 ## Quick start
 
 ```sh
+# Create and test a local package without authentication
+pps create --local --name two-sum
+cd two-sum
+# Add problem files, then run them locally
+pps run .
+
+# Create, validate, and deploy a remote PPS repository
 pps auth
-pps create
+pps create --name two-sum --template stdio
 pps clone 1
 pps invocate
 pps list invocate
 pps detail invocate 456
 pps deploy
-pps run .
 pps problem 1
 pps submit 1 solution.cpp
 pps -v
 pps update
 ```
 
-Problem `#1` in these examples is the public **a + b** problem: print the sum of two integers (1 second, 128 MiB, sample `1 2` → `3`). In a terminal, PPS presents numbered menus for finite choices such as creation settings, clone transport, execution environment, and submission language. Run `pps --help` or `pps <command> --help` for flags and contextual help. See the [command guide](docs/commands.en.md) for complete workflows.
+Problem `#1` in these examples is the public **a + b** problem: print the sum of two integers (1 second, 128 MiB, sample `1 2` → `3`). Only `pps auth` and `pps create` may prompt. Every other command uses options and documented defaults, so terminal and automated invocations behave the same way. Run `pps --help` or `pps <command> --help` for flags and copyable examples. See the [command guide](docs/commands.en.md) and the more detailed [Korean workbook](docs/commands.md) for complete workflows.
 
 ## Authentication and update state
 

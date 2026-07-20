@@ -48,7 +48,7 @@ irm https://raw.githubusercontent.com/PROJECT-PS/PPS-CLI/main/install.ps1 | iex
 릴리즈 페이지에서 아키텍처에 맞는 `.deb` 파일을 받은 뒤 설치합니다.
 
 ```sh
-VERSION=v0.3.1
+VERSION=v0.4.0
 sudo apt install "./pps_${VERSION}_amd64.deb"
 ```
 
@@ -57,24 +57,31 @@ sudo apt install "./pps_${VERSION}_amd64.deb"
 ## 빠른 시작
 
 ```sh
+# 인증 없이 로컬 문제 패키지 생성·실행
+pps create --local --name two-sum
+cd two-sum
+# 문제 파일을 작성한 뒤
+pps run .
+
+# PPS 원격 저장소 생성·검증·배포
 pps auth
 pps auth status
-
-pps create
+pps create --name two-sum --template stdio
 pps clone 1
 pps invocate
 pps list invocate
 pps detail invocate 456
 pps deploy
 
-pps run .
 pps problem 1
 pps submit 1 solution.cpp
 pps -v
 pps update
 ```
 
-예제의 `#1`은 두 정수의 합을 출력하는 공개 문제 **a + b**입니다(1초, 128 MiB, 예제 `1 2` → `3`). 터미널에서 실행하면 생성 옵션, clone 방식, 실행 환경, 제출 언어처럼 정해진 선택지를 번호 메뉴로 고를 수 있습니다. 플래그와 전체 명령은 `pps --help`, 세부 명령은 `pps <command> --help`로 확인할 수 있습니다. 자세한 사용 흐름은 [명령어 안내](docs/commands.md)를 참고하세요.
+예제의 `#1`은 두 정수의 합을 출력하는 공개 문제 **a + b**입니다(1초, 128 MiB, 예제 `1 2` → `3`). 대화형 입력은 `pps auth`와 `pps create`에서만 사용합니다. 나머지 명령은 옵션과 문서화된 기본값으로 동작하므로 터미널과 자동화에서 같은 방식으로 실행됩니다. 플래그와 전체 명령은 `pps --help`, 세부 명령은 `pps <command> --help`로 확인할 수 있습니다.
+
+문제 디렉터리 구성, `config.json`, 정답·오답 해답과 테스트 생성기 작성, 로컬/Docker 실행, 원격 검증·배포, 제출 결과 필터까지 처음부터 따라 하려면 [PPS CLI 학습 가이드](docs/commands.md)를 참고하세요.
 
 ## 인증 정보와 업데이트 상태
 
