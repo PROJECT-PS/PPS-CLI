@@ -9,6 +9,19 @@ $ErrorActionPreference = "Stop"
 if (-not $InstallDir) {
     $InstallDir = Join-Path $env:LOCALAPPDATA "Programs\PPS"
 }
+$InstallDir = [System.IO.Path]::GetFullPath($InstallDir)
+
+function Test-PathEntry {
+    param(
+        [string[]]$Entries,
+        [string]$Candidate
+    )
+
+    $normalizedCandidate = $Candidate.TrimEnd('\', '/')
+    return [bool]($Entries | Where-Object {
+        $_.Trim().Trim('"').TrimEnd('\', '/') -ieq $normalizedCandidate
+    } | Select-Object -First 1)
+}
 
 $nativeArchitecture = [System.Runtime.InteropServices.RuntimeInformation]::OSArchitecture.ToString().ToUpperInvariant()
 $architecture = switch ($nativeArchitecture) {
@@ -58,13 +71,19 @@ try {
 
     $userPath = [Environment]::GetEnvironmentVariable("Path", "User")
     $pathEntries = @($userPath -split ';' | Where-Object { $_ })
-    if ($pathEntries -notcontains $InstallDir) {
+    if (-not (Test-PathEntry -Entries $pathEntries -Candidate $InstallDir)) {
         $newPath = (@($pathEntries) + $InstallDir) -join ';'
         [Environment]::SetEnvironmentVariable("Path", $newPath, "User")
-        $env:Path = "$env:Path;$InstallDir"
-        Write-Host "Added $InstallDir to the user PATH. Open a new terminal if needed."
+        Write-Host "Added $InstallDir to the user PATH."
     }
+
+    $processPathEntries = @($env:Path -split ';' | Where-Object { $_ })
+    if (-not (Test-PathEntry -Entries $processPathEntries -Candidate $InstallDir)) {
+        $env:Path = (@($processPathEntries) + $InstallDir) -join ';'
+    }
+
     Write-Host "Installed PPS CLI $Version to $InstallDir\pps.exe"
+    Write-Host "PPS CLI is ready in this PowerShell session. Run: pps --version"
 }
 finally {
     Remove-Item -Recurse -Force -ErrorAction SilentlyContinue $tempDir

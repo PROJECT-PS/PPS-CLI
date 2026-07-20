@@ -10,18 +10,24 @@ macOS와 Linux에서는 다음 명령이 운영체제와 CPU 아키텍처를 감
 curl -fsSL https://raw.githubusercontent.com/PROJECT-PS/PPS-CLI/main/install.sh | sh
 ```
 
-특정 버전이나 설치 위치를 지정할 수 있습니다.
+기본 설치 경로는 대부분의 셸에서 PATH에 포함된 `/usr/local/bin`입니다. 현재 사용자가 이 경로에 쓸 수 없으면 설치기가 `sudo` 권한을 요청합니다. 설치 명령이 끝나면 같은 터미널에서 `pps --version`을 바로 실행할 수 있습니다.
+
+특정 버전을 지정할 수 있습니다.
 
 ```sh
 curl -fsSL https://raw.githubusercontent.com/PROJECT-PS/PPS-CLI/main/install.sh | \
-  PPS_VERSION=v0.5.0 PPS_INSTALL_DIR="$HOME/bin" sh
+  PPS_VERSION=v0.5.0 sh
 ```
+
+설치 위치를 바꾸려면 `PPS_INSTALL_DIR`에 현재 PATH에 포함된 디렉터리를 지정하세요.
 
 Windows PowerShell:
 
 ```powershell
 irm https://raw.githubusercontent.com/PROJECT-PS/PPS-CLI/main/install.ps1 | iex
 ```
+
+기본 경로는 `%LOCALAPPDATA%\Programs\PPS`입니다. 설치기는 사용자 PATH에 이 경로를 영구 등록하고 현재 PowerShell 세션에도 즉시 반영합니다.
 
 로컬 파일로 받은 경우 `./install.ps1 -Version v0.5.0 -InstallDir C:\Tools\PPS`처럼 실행할 수 있습니다.
 
@@ -61,7 +67,7 @@ Debian/Ubuntu는 릴리즈의 `pps_<version>_amd64.deb` 또는 `pps_<version>_ar
 
 ## 삭제
 
-- macOS/Linux 설치 스크립트: 설치된 `pps` 파일을 삭제합니다.
+- macOS/Linux 설치 스크립트: 기본 설치에서는 `sudo rm /usr/local/bin/pps`로 삭제합니다. `PPS_INSTALL_DIR`을 사용했다면 해당 경로의 `pps`를 삭제합니다.
 - Windows: 기본 설치 경로 `%LOCALAPPDATA%\Programs\PPS`를 삭제하고, 사용자 `PATH`에서 같은 경로를 제거합니다. 별도 `-InstallDir`을 사용했다면 해당 경로를 삭제합니다.
 - Homebrew: `brew uninstall PROJECT-PS/PPS-CLI/pps` 후 필요하면 `brew untap PROJECT-PS/PPS-CLI`
 - Debian/Ubuntu: `sudo apt remove pps`

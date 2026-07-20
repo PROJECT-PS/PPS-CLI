@@ -12,11 +12,15 @@ macOS와 Linux:
 curl -fsSL https://raw.githubusercontent.com/PROJECT-PS/PPS-CLI/main/install.sh | sh
 ```
 
+기본적으로 PATH에 포함된 `/usr/local/bin`에 설치하며, 필요한 경우 설치 중 `sudo` 권한을 요청합니다. 설치가 끝나면 같은 터미널에서 바로 `pps`를 실행할 수 있습니다.
+
 Windows PowerShell:
 
 ```powershell
 irm https://raw.githubusercontent.com/PROJECT-PS/PPS-CLI/main/install.ps1 | iex
 ```
+
+사용자 PATH와 현재 PowerShell 세션에 자동으로 등록되므로 새 창을 열지 않고 바로 실행할 수 있습니다.
 
 설치를 확인합니다.
 

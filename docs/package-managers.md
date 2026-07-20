@@ -27,7 +27,7 @@ Homebrew의 [tap 생성 공식 문서](https://docs.brew.sh/How-to-Create-and-Ma
 
 ## Windows
 
-Windows는 패키지 관리자에 등록하지 않고 별도 관리합니다. 릴리즈마다 AMD64와 ARM64용 ZIP을 GitHub Release에 게시하며, `install.ps1`이 운영체제 아키텍처 감지, 다운로드, SHA-256 검증, 설치 및 사용자 `PATH` 등록을 처리합니다.
+Windows는 패키지 관리자에 등록하지 않고 별도 관리합니다. 릴리즈마다 AMD64와 ARM64용 ZIP을 GitHub Release에 게시하며, `install.ps1`이 운영체제 아키텍처 감지, 다운로드, SHA-256 검증, 설치, 사용자 `PATH` 등록과 현재 PowerShell 세션 반영을 처리합니다.
 
 ```powershell
 irm https://raw.githubusercontent.com/PROJECT-PS/PPS-CLI/main/install.ps1 | iex

@@ -2,7 +2,8 @@
 set -eu
 
 repository="${PPS_RELEASE_REPOSITORY:-PROJECT-PS/PPS-CLI}"
-install_dir="${PPS_INSTALL_DIR:-$HOME/.local/bin}"
+requested_install_dir="${PPS_INSTALL_DIR:-}"
+install_dir="${requested_install_dir:-/usr/local/bin}"
 version="${PPS_VERSION:-}"
 
 fail() {
@@ -12,6 +13,7 @@ fail() {
 
 command -v curl >/dev/null 2>&1 || fail "curl is required"
 command -v tar >/dev/null 2>&1 || fail "tar is required"
+command -v install >/dev/null 2>&1 || fail "install is required"
 
 case "$(uname -s)" in
   Linux) os="linux" ;;
@@ -23,6 +25,23 @@ case "$(uname -m)" in
   x86_64|amd64) arch="amd64" ;;
   arm64|aarch64) arch="arm64" ;;
   *) fail "unsupported CPU architecture: $(uname -m)" ;;
+esac
+
+case ":$PATH:" in
+  *:"$install_dir":*) ;;
+  *)
+    if [ -z "$requested_install_dir" ] && [ -n "${HOME:-}" ]; then
+      for candidate in "${HOME:-}/.local/bin" "${HOME:-}/bin"; do
+        case ":$PATH:" in
+          *:"$candidate":*) install_dir="$candidate"; break ;;
+        esac
+      done
+    fi
+    case ":$PATH:" in
+      *:"$install_dir":*) ;;
+      *) fail "$install_dir is not on PATH; set PPS_INSTALL_DIR to a directory already on PATH" ;;
+    esac
+    ;;
 esac
 
 if [ -z "$version" ]; then
@@ -52,13 +71,18 @@ else
 fi
 [ "$expected" = "$actual" ] || fail "SHA-256 verification failed"
 
-mkdir -p "$tmp_dir/extract" "$install_dir"
+mkdir -p "$tmp_dir/extract"
 tar -xzf "$tmp_dir/$archive" -C "$tmp_dir/extract"
 [ -f "$tmp_dir/extract/pps" ] || fail "the release archive does not contain pps"
-install -m 0755 "$tmp_dir/extract/pps" "$install_dir/pps"
+
+if mkdir -p "$install_dir" 2>/dev/null && [ -w "$install_dir" ]; then
+  install -m 0755 "$tmp_dir/extract/pps" "$install_dir/pps"
+else
+  command -v sudo >/dev/null 2>&1 || fail "administrator access is required to install to $install_dir; install sudo or set PPS_INSTALL_DIR to a writable directory on PATH"
+  printf 'Administrator access is required to install to %s.\n' "$install_dir"
+  sudo mkdir -p "$install_dir"
+  sudo install -m 0755 "$tmp_dir/extract/pps" "$install_dir/pps"
+fi
 
 printf 'Installed PPS CLI %s to %s/pps\n' "$version" "$install_dir"
-case ":$PATH:" in
-  *:"$install_dir":*) ;;
-  *) printf 'Add %s to PATH before running pps.\n' "$install_dir" ;;
-esac
+printf 'PPS CLI is ready. Run: pps --version\n'

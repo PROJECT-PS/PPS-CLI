@@ -27,7 +27,7 @@ Homebrew's [Core acceptance policy](https://docs.brew.sh/Acceptable-Formulae) re
 
 ## Windows
 
-Windows is managed separately without package-manager registration. Each release publishes AMD64 and ARM64 ZIP files to GitHub Releases. `install.ps1` detects the native architecture, downloads the archive, verifies SHA-256, installs `pps.exe`, and updates the user `PATH`.
+Windows is managed separately without package-manager registration. Each release publishes AMD64 and ARM64 ZIP files to GitHub Releases. `install.ps1` detects the native architecture, downloads the archive, verifies SHA-256, installs `pps.exe`, updates the user `PATH`, and refreshes the current PowerShell session.
 
 ```powershell
 irm https://raw.githubusercontent.com/PROJECT-PS/PPS-CLI/main/install.ps1 | iex

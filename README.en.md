@@ -12,11 +12,15 @@ macOS and Linux:
 curl -fsSL https://raw.githubusercontent.com/PROJECT-PS/PPS-CLI/main/install.sh | sh
 ```
 
+The installer uses `/usr/local/bin`, which is normally already on PATH, and requests `sudo` only when needed. You can run `pps` immediately in the same terminal.
+
 Windows PowerShell:
 
 ```powershell
 irm https://raw.githubusercontent.com/PROJECT-PS/PPS-CLI/main/install.ps1 | iex
 ```
+
+The installer updates both the user PATH and the current PowerShell session, so `pps` is available without opening a new terminal.
 
 Verify the installation:
 

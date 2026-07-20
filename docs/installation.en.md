@@ -10,13 +10,17 @@ On macOS and Linux, the installer detects the operating system and CPU, download
 curl -fsSL https://raw.githubusercontent.com/PROJECT-PS/PPS-CLI/main/install.sh | sh
 ```
 
-Set `PPS_VERSION=v0.5.0` or `PPS_INSTALL_DIR="$HOME/bin"` to override the version or destination.
+The default destination is `/usr/local/bin`, which is already on PATH in standard shells. The installer requests `sudo` when the current user cannot write there. After it finishes, run `pps --version` immediately in the same terminal.
+
+Set `PPS_VERSION=v0.5.0` to install a specific version. To change the destination, set `PPS_INSTALL_DIR` to a directory already on PATH.
 
 On Windows PowerShell:
 
 ```powershell
 irm https://raw.githubusercontent.com/PROJECT-PS/PPS-CLI/main/install.ps1 | iex
 ```
+
+The default destination is `%LOCALAPPDATA%\Programs\PPS`. The installer permanently adds it to the user PATH and also updates the current PowerShell session immediately.
 
 For a downloaded script, use parameters such as `./install.ps1 -Version v0.5.0 -InstallDir C:\Tools\PPS`.
 
@@ -44,7 +48,7 @@ Archive names follow `pps_<version>_<os>_<arch>`, with `.tar.gz` on Linux/macOS 
 
 ## Removal
 
-- macOS/Linux direct installer: remove the installed `pps` executable.
+- macOS/Linux direct installer: run `sudo rm /usr/local/bin/pps` for the default installation. If you set `PPS_INSTALL_DIR`, remove `pps` from that directory instead.
 - Windows: delete the default `%LOCALAPPDATA%\Programs\PPS` directory and remove that entry from the user `PATH`. If you used `-InstallDir`, remove that directory instead.
 - Homebrew: `brew uninstall PROJECT-PS/PPS-CLI/pps`, then optionally `brew untap PROJECT-PS/PPS-CLI`
 - Debian/Ubuntu: `sudo apt remove pps`
