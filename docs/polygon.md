@@ -175,7 +175,7 @@ git add -A
 git commit -m "import Polygon package"
 ```
 
-PPS 원격 문제에 연결한 뒤에는 일반 작성 흐름과 동일하게 `pps invocate`, `pps deploy`를 사용합니다.
+이미 만든 PPS 원격 문제에 연결하려면 변환 결과의 Git 저장소 안에서 `pps remote <problem-id 또는 owner/name>`를 실행합니다. 이 명령은 remote와 문제 ID 메타데이터만 기록하고 원격 이력을 병합하지 않으므로, branch와 기존 커밋을 확인한 뒤 `pps sync`, `pps invocate`, `pps deploy`를 사용하세요.
 
 ## 9. 문제 해결
 

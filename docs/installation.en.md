@@ -12,7 +12,7 @@ curl -fsSL https://raw.githubusercontent.com/PROJECT-PS/PPS-CLI/main/install.sh 
 
 The default destination is `/usr/local/bin`, which is already on PATH in standard shells. The installer requests `sudo` when the current user cannot write there. After it finishes, run `pps --version` immediately in the same terminal.
 
-Set `PPS_VERSION=v0.5.0` to install a specific version. To change the destination, set `PPS_INSTALL_DIR` to a directory already on PATH.
+Set `PPS_VERSION=v0.6.0` to install a specific version. To change the destination, set `PPS_INSTALL_DIR` to a directory already on PATH.
 
 On Windows PowerShell:
 
@@ -22,7 +22,7 @@ irm https://raw.githubusercontent.com/PROJECT-PS/PPS-CLI/main/install.ps1 | iex
 
 The default destination is `%LOCALAPPDATA%\Programs\PPS`. The installer permanently adds it to the user PATH and also updates the current PowerShell session immediately.
 
-For a downloaded script, use parameters such as `./install.ps1 -Version v0.5.0 -InstallDir C:\Tools\PPS`.
+For a downloaded script, use parameters such as `./install.ps1 -Version v0.6.0 -InstallDir C:\Tools\PPS`.
 
 Windows is distributed independently through this PowerShell installer and GitHub Release ZIP files.
 

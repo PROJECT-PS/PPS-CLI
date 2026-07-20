@@ -2,6 +2,18 @@
 
 This document records user-visible PPS CLI changes. Versions follow [Semantic Versioning](https://semver.org/).
 
+## [v0.6.0] - 2026-07-21
+
+### Added
+
+- `pps remote` for connecting an existing Git repository with the same problem ID or `nickname/repository` reference accepted by `pps clone`
+- HTTPS/SSH selection, named remotes, explicit `--force` conflict replacement, JSON results, and automatic `.git/pps.json` metadata
+
+### Changed
+
+- The macOS/Linux direct installer now targets the standard PATH location `/usr/local/bin` and requests `sudo` only when needed
+- The Windows installer now refreshes the current PowerShell PATH so `pps` is immediately available
+
 ## [v0.5.0] - 2026-07-20
 
 ### Added

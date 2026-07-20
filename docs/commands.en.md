@@ -37,6 +37,8 @@ pps create --local --name two-sum
 pps problem 1
 pps clone 1
 pps clone nickname/two-sum
+pps remote 1
+pps remote nickname/two-sum --ssh
 pps list problem
 pps search two sum
 ```
@@ -46,6 +48,8 @@ Remote `pps create` presents numbered choices for omitted settings and requires 
 `pps create --local --name two-sum` works without authentication. It creates `<current-directory>/two-sum`, initializes a local Git repository on `main`, and records an empty initial commit. It does not create a PPS or GitHub repository. Only `--name` is accepted with `--local`; add a Git remote later if needed.
 
 Problem `#1` is the public **a + b** example: print the sum of two integers (1 second, 128 MiB, sample `1 2` → `3`). `pps problem 1` prints all statements; use `--statement English` for one exact label. Clone uses HTTPS by default; select SSH with `--ssh` or the GitHub CLI with `--gh`. Repositories cloned by PPS store their problem ID in `.git/pps.json`, allowing later commands to infer it.
+
+Use `pps remote <problem-id|nickname/repository>` inside an existing local Git repository to connect it without cloning again. HTTPS and the remote name `origin` are the defaults. `--ssh` selects SSH, `--name pps` preserves an existing origin by using another name, and `--force` explicitly replaces a conflicting URL. The command is idempotent when the URL already matches and always records `.git/pps.json`. It never fetches, pulls, pushes, or changes working-tree files, so review and reconcile any existing remote history before synchronization. Public problems can be resolved without authentication; private problems require an authenticated account with access. Add `--json` for structured results.
 
 ### Polygon import
 
@@ -61,11 +65,14 @@ See the [Polygon conversion guide](polygon.en.md) for the complete TeX command c
 ## Git synchronization
 
 ```sh
+pps remote 1
 pps pull
 pps commit -m "add edge cases"
 pps push
 pps sync -m "refresh tests"
 ```
+
+`pps remote` connects both the Git remote and PPS problem metadata. It does not merge remote history; inspect the branches before the first `pps sync`.
 
 ## Validation and deployment
 

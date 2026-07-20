@@ -96,14 +96,14 @@ git log --oneline --decorate -1
 
 PPS API나 GitHub에 문제 저장소를 만들지 않으며 인증도 확인하지 않습니다. `--description`, `--template`, `--account-id`, `--private`, `--public-solvable`은 원격 생성 전용이므로 `--local`과 함께 사용할 수 없습니다.
 
-생성 직후에는 `.git`만 있습니다. 이제 직접 문제 파일을 추가하거나 이미 가진 문제 템플릿을 복사하면 됩니다. 나중에 일반 Git 원격을 연결하려면 다음처럼 실행합니다.
+생성 직후에는 `.git`만 있습니다. 이제 직접 문제 파일을 추가하거나 이미 가진 문제 템플릿을 복사하면 됩니다. PPS에서 이미 만든 문제 저장소에 연결하려면 clone과 같은 문제 참조 형식으로 `pps remote`를 실행합니다.
 
 ```sh
-git remote add origin <git-url>
-git push -u origin main
+pps remote 123
+pps remote alice/two-sum --ssh
 ```
 
-일반 Git 원격을 연결하는 것만으로 PPS 문제 ID가 자동 발급되지는 않습니다. PPS의 원격 검증·배포를 사용하려면 PPS에서 저장소를 등록하거나 생성하고, 필요하면 원격 명령에 `--problem-id`를 명시해야 합니다.
+`pps remote`는 Git 원격과 `.git/pps.json` 메타데이터만 설정합니다. 원격 내용을 자동으로 가져오거나 로컬 파일을 push하지 않으므로, 기존 원격 커밋이 있다면 이력을 확인하고 병합한 뒤 동기화하세요. 일반 `git remote add`로 PPS와 관계없는 저장소를 연결할 수도 있지만, 이 경우 PPS 문제 ID는 발급되거나 기록되지 않습니다.
 
 ## 5. 원격 PPS 문제 저장소 만들기
 
@@ -150,6 +150,23 @@ pps clone 123 --gh --directory two-sum
 - `--directory`, `-d`: clone할 로컬 디렉터리 이름 지정
 
 PPS로 clone한 저장소에는 `.git/pps.json`이 기록됩니다. 이 메타데이터 덕분에 저장소 안에서는 `invocate`, `deploy`, 작업 목록, 상세 조회에서 문제 ID를 생략할 수 있습니다.
+
+이미 존재하는 로컬 Git 저장소를 PPS 문제에 연결할 때는 새로 clone할 필요 없이 다음 명령을 사용합니다.
+
+```sh
+pps remote 123
+pps remote alice/two-sum --ssh
+pps remote 123 --name pps
+pps remote 123 --force
+```
+
+- 위치 인자: `pps clone`과 동일하게 숫자 문제 ID 또는 `nickname/repository`
+- 기본 동작: 현재 Git 저장소에 HTTPS URL의 `origin`을 추가하고 `.git/pps.json` 기록
+- `--ssh`, `-s`: SSH URL 사용
+- `--name`, `-n`: `origin` 대신 `pps` 같은 다른 Git remote 이름 사용
+- `--force`, `-f`: 같은 이름의 기존 remote가 다른 URL일 때 명시적으로 교체
+
+같은 URL이 이미 설정되어 있으면 오류 없이 메타데이터만 다시 기록합니다. 다른 URL의 remote는 `--force` 없이는 절대 바꾸지 않습니다. 명령은 pull, fetch, push와 작업 파일 변경을 수행하지 않습니다. 공개 문제는 인증 없이 연결할 수 있지만 비공개 문제를 찾으려면 로그인과 접근 권한이 필요합니다. 자동화 결과는 `pps --json remote 123`으로 받을 수 있습니다.
 
 ## 6. Polygon 패키지를 PPS로 변환하기
 
@@ -363,6 +380,8 @@ pps sync --no-add --message "commit staged files only"
 
 `create --local` 직후처럼 remote가 없는 저장소에서는 `pps sync`가 실패합니다. 먼저 remote를 연결하거나 일반 `pps commit`으로 로컬 기록만 남기세요.
 
+PPS 문제에 연결할 때는 `git remote add` 대신 `pps remote <problem-id 또는 owner/name>`를 사용하면 remote와 문제 ID 메타데이터를 함께 기록할 수 있습니다. 단, `pps remote`는 원격 이력을 자동 병합하지 않으므로 처음 `sync`하기 전에 `git fetch`와 branch 상태를 확인하세요.
+
 ## 11. 원격 검증과 배포
 
 로컬 실행이 통과했다면 원격 PPS 환경에서 다시 검증합니다.
@@ -516,6 +535,7 @@ PPS CLI는 이 문자열을 API가 요구하는 내부 값으로 변환합니다
 | Polygon 디렉터리/ZIP 변환 | `pps polygon <source> <destination>` |
 | 원격 PPS 저장소 생성 | `pps create [options]` |
 | 문제 저장소 clone | `pps clone <problem-id 또는 owner/name>` |
+| 기존 Git 저장소를 PPS 문제에 연결 | `pps remote <problem-id 또는 owner/name>` |
 | Git 래퍼 | `pps pull`, `pps commit`, `pps push`, `pps sync` |
 | 로컬 문제 실행 | `pps run [repository-path]` |
 | 원격 검증/배포 | `pps invocate`, `pps deploy` |
@@ -544,9 +564,10 @@ pps auth
 
 ### 문제 ID를 추론할 수 없음
 
-PPS clone이 아니거나 `.git/pps.json`이 없는 저장소에서는 ID를 명시합니다.
+PPS clone이 아니거나 `.git/pps.json`이 없는 저장소에서는 `pps remote`로 연결하거나 ID를 명시합니다.
 
 ```sh
+pps remote 123
 pps invocate --problem-id 123
 pps list invocate --problem-id 123
 pps detail invocate 456 --problem-id 123

@@ -51,7 +51,7 @@ pps run .
 pps sync -m "update problem"
 ```
 
-Use the problem ID printed by `pps create` with `pps clone`. `pps run` performs local testing and works without signing in.
+Use the problem ID printed by `pps create` with `pps clone`. To connect an existing local Git repository, run `pps remote <problem-id>` inside it. `pps run` performs local testing and works without signing in.
 
 ### 2. Convert and synchronize a Polygon package
 
@@ -59,8 +59,10 @@ Use the problem ID printed by `pps create` with `pps clone`. `pps run` performs 
 pps polygon ./polygon-package.zip ./converted-problem
 cd ./converted-problem
 
-# Prepare the converted output as a Git repository connected to a remote, then run:
-pps sync -m "import Polygon package"
+# Connect an existing PPS problem, review the remote branch history, and synchronize it.
+git init -b main
+pps remote <problem-id>
+pps sync --remote origin --branch main -m "import Polygon package"
 ```
 
 Both ZIP archives and extracted directories are accepted. See the [Polygon conversion guide](docs/polygon.en.md) for conversion rules and Git repository setup.
@@ -80,7 +82,7 @@ pps submit <problem-id> solution.cpp
 | Command | Purpose |
 | --- | --- |
 | `pps auth` | Sign in, sign out, and inspect authentication status |
-| `pps create`, `pps clone` | Create a problem and clone its repository |
+| `pps create`, `pps clone`, `pps remote` | Create, clone, or connect a problem repository |
 | `pps run` | Build and test solutions locally |
 | `pps polygon` | Convert a Polygon package to PPS format |
 | `pps sync` | Pull, commit, and push Git changes |

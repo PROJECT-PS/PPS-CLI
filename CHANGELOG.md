@@ -2,6 +2,18 @@
 
 이 문서는 사용자에게 영향을 주는 PPS CLI 변경 사항을 기록합니다. 버전은 [Semantic Versioning](https://semver.org/lang/ko/)을 따릅니다.
 
+## [v0.6.0] - 2026-07-21
+
+### 추가
+
+- `pps clone`과 동일한 문제 ID 또는 `nickname/repository` 형식으로 기존 Git 저장소를 PPS 문제에 연결하는 `pps remote`
+- HTTPS/SSH URL 선택, remote 이름 지정, 충돌 시 명시적 `--force`, JSON 결과와 `.git/pps.json` 자동 기록
+
+### 변경
+
+- macOS/Linux 직접 설치는 PATH의 표준 위치인 `/usr/local/bin`을 기본으로 사용하고 필요할 때 `sudo` 요청
+- Windows 설치 직후 현재 PowerShell 세션에서도 `pps`를 바로 찾도록 PATH 즉시 반영
+
 ## [v0.5.0] - 2026-07-20
 
 ### 추가
