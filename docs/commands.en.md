@@ -2,7 +2,7 @@
 
 [한국어](commands.md)
 
-Invalid input prints contextual command help. Add `--json` to supported API-oriented commands for machine-readable output. Only `pps auth` and `pps create` may prompt; every other command uses arguments, options, or documented defaults.
+Invalid input prints contextual command help. Add `--json` to supported API-oriented commands for machine-readable output. Only `pps auth` and `pps create` ask setup questions. `pps polygon` asks for y/n only before replacing a populated destination; use `--force` for explicitly approved automation. Other commands use arguments, options, or documented defaults.
 
 The [Korean workbook](commands.md) includes a complete first-problem tutorial covering the repository layout, `config.json`, generators, reference and intentionally wrong solutions, local/Docker testing, remote validation, deployment, and submissions.
 
@@ -46,6 +46,17 @@ Remote `pps create` presents numbered choices for omitted settings and requires 
 `pps create --local --name two-sum` works without authentication. It creates `<current-directory>/two-sum`, initializes a local Git repository on `main`, and records an empty initial commit. It does not create a PPS or GitHub repository. Only `--name` is accepted with `--local`; add a Git remote later if needed.
 
 Problem `#1` is the public **a + b** example: print the sum of two integers (1 second, 128 MiB, sample `1 2` → `3`). `pps problem 1` prints all statements; use `--statement English` for one exact label. Clone uses HTTPS by default; select SSH with `--ssh` or the GitHub CLI with `--gh`. Repositories cloned by PPS store their problem ID in `.git/pps.json`, allowing later commands to infer it.
+
+### Polygon import
+
+```sh
+pps polygon ./polygon-package ./two-sum
+pps polygon ./polygon-package.zip ./two-sum
+```
+
+This authentication-free command maps `problem.xml`, TeX statements, programs, generated tests, manual tests, and subtasks into a statically validated PPS package. A populated destination requires y/n confirmation; `n` leaves it unchanged and `--force` performs a pre-approved replacement. Conversion stages all data before replacing the destination.
+
+See the [Polygon conversion guide](polygon.en.md) for the complete TeX command coverage, image and custom-command handling, encodings, ZIP safety rules, warnings, and post-import checks.
 
 ## Git synchronization
 

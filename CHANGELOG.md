@@ -2,6 +2,21 @@
 
 이 문서는 사용자에게 영향을 주는 PPS CLI 변경 사항을 기록합니다. 버전은 [Semantic Versioning](https://semver.org/lang/ko/)을 따릅니다.
 
+## [v0.5.0] - 2026-07-20
+
+### 추가
+
+- Polygon 디렉터리 또는 ZIP을 인증 없이 PPS 패키지로 변환하는 `pps polygon <source> <destination>`
+- 수식, 구역, 예제, 중첩 목록, 코드, 링크, 이미지, 표, 인용과 `defs.toml` 사용자 명령을 처리하는 Polygon TeX→Markdown 변환기
+- UTF-8/UTF-16과 Windows·동아시아 legacy 인코딩 정규화, ZIP 경로 탈출·특수 파일·압축 폭탄 방어
+- Polygon 변환 준비부터 `pps run` 검증까지 설명하는 한국어·영어 가이드
+
+### 변경
+
+- 기존 대상은 y/n 확인 뒤 전체 교체하며 `n`은 원본을 보존; 자동화에는 명시적 `--force` 제공
+- manual 테스트를 원본 바이트 그대로 출력하는 분할 가능한 Python 생성기로 변환
+- 임시 경로에서 변환과 PPS 정적 검증을 끝낸 뒤 대상을 교체하고 실패 시 기존 데이터 복원
+
 ## [v0.4.0] - 2026-07-20
 
 ### 추가

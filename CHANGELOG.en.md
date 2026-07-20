@@ -2,6 +2,21 @@
 
 This document records user-visible PPS CLI changes. Versions follow [Semantic Versioning](https://semver.org/).
 
+## [v0.5.0] - 2026-07-20
+
+### Added
+
+- Authentication-free `pps polygon <source> <destination>` conversion from Polygon directories or ZIP archives
+- Polygon TeX-to-Markdown support for formulas, sections, samples, nested lists, code, links, images, tables, epigraphs, and `defs.toml` custom commands
+- UTF-8/UTF-16 and Windows/East Asian legacy encoding normalization plus ZIP traversal, special-file, and expansion-bomb defenses
+- Detailed Korean and English Polygon conversion guides through post-import `pps run` validation
+
+### Changed
+
+- Populated destinations require y/n confirmation, while `n` preserves all data and automation can opt into `--force`
+- Manual tests become split-capable Python generators that emit the original bytes exactly
+- Conversion and PPS static validation complete in staging before replacement, with restoration on final replacement failure
+
 ## [v0.4.0] - 2026-07-20
 
 ### Added

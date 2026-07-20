@@ -44,7 +44,7 @@ The installer uses `%LOCALAPPDATA%\Programs\PPS` and adds it to the user `PATH`.
 Download the `.deb` matching your architecture from the release page:
 
 ```sh
-VERSION=v0.4.0
+VERSION=v0.5.0
 sudo apt install "./pps_${VERSION}_amd64.deb"
 ```
 
@@ -58,6 +58,9 @@ pps create --local --name two-sum
 cd two-sum
 # Add problem files, then run them locally
 pps run .
+
+# Convert an extracted Polygon package or ZIP without authentication
+pps polygon ./polygon-package.zip ./imported-problem
 
 # Create, validate, and deploy a remote PPS repository
 pps auth
@@ -73,7 +76,7 @@ pps -v
 pps update
 ```
 
-Problem `#1` in these examples is the public **a + b** problem: print the sum of two integers (1 second, 128 MiB, sample `1 2` → `3`). Only `pps auth` and `pps create` may prompt. Every other command uses options and documented defaults, so terminal and automated invocations behave the same way. Run `pps --help` or `pps <command> --help` for flags and copyable examples. See the [command guide](docs/commands.en.md) and the more detailed [Korean workbook](docs/commands.md) for complete workflows.
+Problem `#1` in these examples is the public **a + b** problem: print the sum of two integers (1 second, 128 MiB, sample `1 2` → `3`). Only `pps auth` and `pps create` ask setup questions. `pps polygon` asks for y/n only before replacing a populated destination; explicitly approved automation uses `--force`. Other commands use options and documented defaults. Run `pps --help` or `pps <command> --help` for flags and examples. See the [command guide](docs/commands.en.md), [Polygon conversion guide](docs/polygon.en.md), and detailed [Korean workbook](docs/commands.md).
 
 ## Authentication and update state
 

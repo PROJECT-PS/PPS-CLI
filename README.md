@@ -48,7 +48,7 @@ irm https://raw.githubusercontent.com/PROJECT-PS/PPS-CLI/main/install.ps1 | iex
 릴리즈 페이지에서 아키텍처에 맞는 `.deb` 파일을 받은 뒤 설치합니다.
 
 ```sh
-VERSION=v0.4.0
+VERSION=v0.5.0
 sudo apt install "./pps_${VERSION}_amd64.deb"
 ```
 
@@ -62,6 +62,9 @@ pps create --local --name two-sum
 cd two-sum
 # 문제 파일을 작성한 뒤
 pps run .
+
+# Polygon 디렉터리 또는 ZIP을 PPS 패키지로 변환
+pps polygon ./polygon-package.zip ./imported-problem
 
 # PPS 원격 저장소 생성·검증·배포
 pps auth
@@ -79,9 +82,9 @@ pps -v
 pps update
 ```
 
-예제의 `#1`은 두 정수의 합을 출력하는 공개 문제 **a + b**입니다(1초, 128 MiB, 예제 `1 2` → `3`). 대화형 입력은 `pps auth`와 `pps create`에서만 사용합니다. 나머지 명령은 옵션과 문서화된 기본값으로 동작하므로 터미널과 자동화에서 같은 방식으로 실행됩니다. 플래그와 전체 명령은 `pps --help`, 세부 명령은 `pps <command> --help`로 확인할 수 있습니다.
+예제의 `#1`은 두 정수의 합을 출력하는 공개 문제 **a + b**입니다(1초, 128 MiB, 예제 `1 2` → `3`). 설정 질문은 `pps auth`와 `pps create`에서만 사용하며, `pps polygon`은 데이터가 있는 대상 경로를 교체하기 직전에만 y/n을 확인합니다. 자동화에서는 명시적으로 승인한 경우 `--force`를 사용합니다. 나머지 명령은 옵션과 문서화된 기본값으로 동작합니다. 플래그와 전체 명령은 `pps --help`, 세부 명령은 `pps <command> --help`로 확인할 수 있습니다.
 
-문제 디렉터리 구성, `config.json`, 정답·오답 해답과 테스트 생성기 작성, 로컬/Docker 실행, 원격 검증·배포, 제출 결과 필터까지 처음부터 따라 하려면 [PPS CLI 학습 가이드](docs/commands.md)를 참고하세요.
+문제 디렉터리 구성, `config.json`, 정답·오답 해답과 테스트 생성기 작성, 로컬/Docker 실행, 원격 검증·배포, 제출 결과 필터까지 처음부터 따라 하려면 [PPS CLI 학습 가이드](docs/commands.md)를 참고하세요. Polygon 패키지의 ZIP·인코딩·LaTeX 변환 범위는 [Polygon 변환 가이드](docs/polygon.md)에 자세히 정리되어 있습니다.
 
 ## 인증 정보와 업데이트 상태
 
