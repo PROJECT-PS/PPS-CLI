@@ -1,115 +1,102 @@
 # PPS CLI
 
-[한국어](README.md) · [English](README.en.md)
+[한국어](README.md) · [Command guide](docs/commands.en.md) · [Polygon conversion guide](docs/polygon.en.md)
 
-PPS CLI is the official command-line tool for creating, validating, invoking, deploying, and solving PROJECT-PS problem repositories from a terminal.
-
-> This public repository contains release binaries, installers, package metadata, and user documentation. It does not contain the application source code.
-
-## Supported platforms
-
-| Operating system | x86-64 / AMD64 | ARM64 |
-| --- | --- | --- |
-| Windows 10/11 | Supported | Supported |
-| macOS | Intel supported | Apple Silicon supported |
-| Linux | Supported | Supported |
+The official command-line tool for creating, testing, synchronizing, and solving problems on PPS. It supports AMD64 and ARM64 on Windows, macOS, and Linux.
 
 ## Installation
 
-### macOS / Linux installer
+macOS and Linux:
 
 ```sh
 curl -fsSL https://raw.githubusercontent.com/PROJECT-PS/PPS-CLI/main/install.sh | sh
 ```
 
-The default destination is `~/.local/bin/pps`. Set `PPS_INSTALL_DIR` to choose another directory.
-
-### Homebrew
-
-```sh
-brew tap PROJECT-PS/PPS-CLI https://github.com/PROJECT-PS/PPS-CLI.git
-brew install PROJECT-PS/PPS-CLI/pps
-```
-
-### Windows PowerShell
+Windows PowerShell:
 
 ```powershell
 irm https://raw.githubusercontent.com/PROJECT-PS/PPS-CLI/main/install.ps1 | iex
 ```
 
-The installer uses `%LOCALAPPDATA%\Programs\PPS` and adds it to the user `PATH`.
-
-### Debian / Ubuntu
-
-Download the `.deb` matching your architecture from the release page:
+Verify the installation:
 
 ```sh
-VERSION=v0.5.0
-sudo apt install "./pps_${VERSION}_amd64.deb"
+pps --version
 ```
 
-See [distribution channel status](docs/package-managers.en.md) and the [detailed installation guide](docs/installation.en.md) for manual installation, verification, and removal.
+See the [installation guide](docs/installation.en.md) for Homebrew, Debian packages, and manual installation.
 
 ## Quick start
 
+### 0. Sign in
+
 ```sh
-# Create and test a local package without authentication
-pps create --local --name two-sum
-cd two-sum
-# Add problem files, then run them locally
-pps run .
-
-# Convert an extracted Polygon package or ZIP without authentication
-pps polygon ./polygon-package.zip ./imported-problem
-
-# Create, validate, and deploy a remote PPS repository
 pps auth
-pps create --name two-sum --template stdio
-pps clone 1
-pps invocate
-pps list invocate
-pps detail invocate 456
-pps deploy
-pps problem 1
-pps submit 1 solution.cpp
-pps -v
-pps update
+# After signing in, connect your GitHub account in PPS web settings before using create and related commands.
 ```
 
-Problem `#1` in these examples is the public **a + b** problem: print the sum of two integers (1 second, 128 MiB, sample `1 2` → `3`). Only `pps auth` and `pps create` ask setup questions. `pps polygon` asks for y/n only before replacing a populated destination; explicitly approved automation uses `--force`. Other commands use options and documented defaults. Run `pps --help` or `pps <command> --help` for flags and examples. See the [command guide](docs/commands.en.md), [Polygon conversion guide](docs/polygon.en.md), and detailed [Korean workbook](docs/commands.md).
-
-## Authentication and update state
-
-The PPS session and last update-check time are stored in separate user-only files.
-
-| Operating system | Authentication | Update-check state | `testlib.h` cache |
-| --- | --- | --- | --- |
-| Linux / macOS | `~/.pps/config.json` | `~/.pps/update-check.json` | `~/.pps/PPS-ASSETS` |
-| Windows | `%APPDATA%\PPS\config.json` | `%APPDATA%\PPS\update-check.json` | `%APPDATA%\PPS\PPS-ASSETS` |
-
-`pps auth status` prints the active authentication path. Logging out removes the stored token and user identity. `update-check.json` stores only the last check time and contains no credentials. When native execution needs `testlib.h`, PPS CLI automatically downloads the public PPS-ASSETS repository into the cache path above.
-
-## Automatic updates
-
-Release builds check the latest GitHub Release at most once every 24 hours when a command runs. A timeout or network failure is silently ignored after two seconds and still suppresses another check for 24 hours. When a newer release exists, PPS prints a reminder to stderr:
+### 1. Create, edit, test, and synchronize a problem
 
 ```sh
-pps update
+pps create
+pps clone <problem-id>
+cd <cloned-directory>
+
+# Edit statement, solution, generator, checker, config.json, and other problem files.
+pps run .
+pps sync -m "update problem"
 ```
 
-`pps update` downloads the archive for the current platform, verifies it against `checksums.txt`, and replaces the executable. Windows finishes replacement after the command exits because a running executable may be locked. Automatic checks and self-update are disabled for the `pps-dev` and `go run .` development profiles.
+Use the problem ID printed by `pps create` with `pps clone`. `pps run` performs local testing and works without signing in.
 
-`pps --version` prints only the installed version without network access. `pps -v` also checks the latest GitHub Release and reports whether an update is available; the latest version is shown as `unknown` when it cannot be checked.
+### 2. Convert and synchronize a Polygon package
 
-Version `v0.1.0` did not include `pps update`; install `v0.2.0` once through the installer or Homebrew. Later releases can be installed with `pps update`. See the [detailed installation guide](docs/installation.en.md).
+```sh
+pps polygon ./polygon-package.zip ./converted-problem
+cd ./converted-problem
 
-## Support and security
+# Prepare the converted output as a Git repository connected to a remote, then run:
+pps sync -m "import Polygon package"
+```
 
-- Help and troubleshooting: [SUPPORT.md](SUPPORT.md)
+Both ZIP archives and extracted directories are accepted. See the [Polygon conversion guide](docs/polygon.en.md) for conversion rules and Git repository setup.
+
+### 3. Run remote validation and submit a solution
+
+```sh
+cd <problem-directory>
+pps invocate
+
+# Submit a solution file after the problem has been validated and deployed.
+pps submit <problem-id> solution.cpp
+```
+
+## Main commands
+
+| Command | Purpose |
+| --- | --- |
+| `pps auth` | Sign in, sign out, and inspect authentication status |
+| `pps create`, `pps clone` | Create a problem and clone its repository |
+| `pps run` | Build and test solutions locally |
+| `pps polygon` | Convert a Polygon package to PPS format |
+| `pps sync` | Pull, commit, and push Git changes |
+| `pps invocate`, `pps deploy` | Run remote validation and deploy a problem |
+| `pps submit`, `pps list` | Submit solutions and inspect submissions |
+| `pps update` | Update the CLI |
+
+See every option in the built-in help:
+
+```sh
+pps --help
+pps <command> --help
+```
+
+The [command guide](docs/commands.en.md) covers complete workflows and more examples.
+
+## Support
+
 - Bugs and feature requests: [GitHub Issues](https://github.com/PROJECT-PS/PPS-CLI/issues)
-- Security reports: follow the private process in [SECURITY.md](SECURITY.md)
+- Troubleshooting: [SUPPORT.md](SUPPORT.md)
 - Release history: [CHANGELOG.en.md](CHANGELOG.en.md)
-
-## License
-
-Distribution materials are available under the [MIT License](LICENSE). See [THIRD_PARTY_NOTICES.md](THIRD_PARTY_NOTICES.md) for bundled dependencies.
+- Security reports: [SECURITY.md](SECURITY.md)
+- License: [MIT License](LICENSE)
