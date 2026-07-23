@@ -64,7 +64,7 @@ pps --json polygon package.zip ./two-sum --force
 | `application/x-tex` 지문 | `statement/*.md` UTF-8 Markdown |
 | checker | `checker/` |
 | 첫 validator | `config.json`에 연결하고 모든 validator 원본은 `validator/`에 복사 |
-| interactor | `interactor/`, 문제 형식은 `interactive` 또는 `two_step` |
+| interactor | `interactor/`, 문제 형식은 `interactive` 또는 Papyrus 원본 문자열 `twostep` |
 | main solution | 유일한 `MCS` 해답 |
 | accepted/rejected solution 태그 | `AC`, `WA`, `TLE`, `MLE`, `FAIL` 조합 |
 | test executable | `generator/`와 `genscript` alias |

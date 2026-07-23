@@ -2,6 +2,25 @@
 
 This document records user-visible PPS CLI changes. Versions follow [Semantic Versioning](https://semver.org/).
 
+## [v0.7.0] - 2026-07-24
+
+### Added
+
+- `pps repo status` classifies local work against GitHub as `clean`, `server_ahead`, `local_ahead`, `diverged`, or `conflicted`, with JSON change lists, ahead counts, and conflict paths
+- `pps repo info` reads or rediscovers the connection cached in `.pps/repository.json`
+- `pps repo settings` reads and updates the Papyrus repository description, GitHub visibility, and post-deployment public-submission setting
+
+### Changed
+
+- `pps clone` and `pps remote` now cache connections in `.pps/repository.json`, with automatic migration from legacy `.git/pps.json`
+- Missing or stale caches are safely reconstructed from Git remotes, while `.pps` and `.pps-code` are automatically added to the repository-local Git exclude list
+- `pps sync` now commits the local snapshot before pulling, allowing Git to produce standard three-way conflict data before the final push
+- The original Papyrus problem type `twostep` is accepted verbatim while remaining runtime-compatible with legacy `two_step` packages
+
+### Fixed
+
+- Git porcelain entries beginning with a space no longer lose the first filename character, which previously reported `config.json` as `onfig.json`
+
 ## [v0.6.0] - 2026-07-21
 
 ### Added

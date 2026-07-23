@@ -48,10 +48,11 @@ cd <cloned-directory>
 
 # statement, solution, generator, checker, config.json 등을 편집합니다.
 pps run .
+pps repo status
 pps sync -m "update problem"
 ```
 
-`pps create`가 출력한 문제 ID를 `pps clone`에 사용하세요. 이미 가진 로컬 Git 저장소를 연결하려면 저장소 안에서 `pps remote <problem-id>`를 실행하면 됩니다. `pps run`은 로컬 테스트이므로 로그인하지 않은 상태에서도 실행할 수 있습니다.
+`pps create`가 출력한 문제 ID를 `pps clone`에 사용하세요. 이미 가진 로컬 Git 저장소를 연결하려면 저장소 안에서 `pps remote <problem-id>`를 실행하면 됩니다. `pps run`은 로컬 테스트이므로 로그인하지 않은 상태에서도 실행할 수 있습니다. `pps repo status`는 로컬 작업과 GitHub 서버를 비교해 동기화 상태와 충돌 가능성을 보여줍니다.
 
 ### 2. Polygon 패키지 변환과 동기화
 
@@ -83,9 +84,10 @@ pps submit <problem-id> solution.cpp
 | --- | --- |
 | `pps auth` | 로그인, 로그아웃, 인증 상태 확인 |
 | `pps create`, `pps clone`, `pps remote` | 문제 생성, 복제, 기존 Git 저장소 연결 |
+| `pps repo info`, `pps repo status`, `pps repo settings` | 저장소 연결·동기화 상태·공개 범위 관리 |
 | `pps run` | 로컬 솔루션 빌드와 테스트 |
 | `pps polygon` | Polygon 패키지를 PPS 형식으로 변환 |
-| `pps sync` | Git 변경 사항 가져오기, 커밋, 푸시 |
+| `pps sync` | Git 변경 사항 커밋, 가져오기, 푸시 |
 | `pps invocate`, `pps deploy` | 원격 검증과 문제 배포 |
 | `pps submit`, `pps list` | 풀이 제출과 제출 결과 조회 |
 | `pps update` | CLI 업데이트 |

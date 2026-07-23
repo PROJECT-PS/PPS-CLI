@@ -48,10 +48,11 @@ cd <cloned-directory>
 
 # Edit statement, solution, generator, checker, config.json, and other problem files.
 pps run .
+pps repo status
 pps sync -m "update problem"
 ```
 
-Use the problem ID printed by `pps create` with `pps clone`. To connect an existing local Git repository, run `pps remote <problem-id>` inside it. `pps run` performs local testing and works without signing in.
+Use the problem ID printed by `pps create` with `pps clone`. To connect an existing local Git repository, run `pps remote <problem-id>` inside it. `pps run` performs local testing and works without signing in. `pps repo status` compares local work with the GitHub server and reports synchronization state and potential conflicts.
 
 ### 2. Convert and synchronize a Polygon package
 
@@ -83,9 +84,10 @@ pps submit <problem-id> solution.cpp
 | --- | --- |
 | `pps auth` | Sign in, sign out, and inspect authentication status |
 | `pps create`, `pps clone`, `pps remote` | Create, clone, or connect a problem repository |
+| `pps repo info`, `pps repo status`, `pps repo settings` | Manage repository connection, sync state, and visibility |
 | `pps run` | Build and test solutions locally |
 | `pps polygon` | Convert a Polygon package to PPS format |
-| `pps sync` | Pull, commit, and push Git changes |
+| `pps sync` | Commit, pull, and push Git changes |
 | `pps invocate`, `pps deploy` | Run remote validation and deploy a problem |
 | `pps submit`, `pps list` | Submit solutions and inspect submissions |
 | `pps update` | Update the CLI |

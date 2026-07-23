@@ -16,7 +16,7 @@ curl -fsSL https://raw.githubusercontent.com/PROJECT-PS/PPS-CLI/main/install.sh 
 
 ```sh
 curl -fsSL https://raw.githubusercontent.com/PROJECT-PS/PPS-CLI/main/install.sh | \
-  PPS_VERSION=v0.6.0 sh
+  PPS_VERSION=v0.7.0 sh
 ```
 
 설치 위치를 바꾸려면 `PPS_INSTALL_DIR`에 현재 PATH에 포함된 디렉터리를 지정하세요.
@@ -29,7 +29,7 @@ irm https://raw.githubusercontent.com/PROJECT-PS/PPS-CLI/main/install.ps1 | iex
 
 기본 경로는 `%LOCALAPPDATA%\Programs\PPS`입니다. 설치기는 사용자 PATH에 이 경로를 영구 등록하고 현재 PowerShell 세션에도 즉시 반영합니다.
 
-로컬 파일로 받은 경우 `./install.ps1 -Version v0.6.0 -InstallDir C:\Tools\PPS`처럼 실행할 수 있습니다.
+로컬 파일로 받은 경우 `./install.ps1 -Version v0.7.0 -InstallDir C:\Tools\PPS`처럼 실행할 수 있습니다.
 
 Windows는 이 PowerShell 설치 스크립트와 GitHub Release ZIP으로 독립 배포합니다.
 

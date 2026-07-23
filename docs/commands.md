@@ -103,7 +103,7 @@ pps remote 123
 pps remote alice/two-sum --ssh
 ```
 
-`pps remote`는 Git 원격과 `.git/pps.json` 메타데이터만 설정합니다. 원격 내용을 자동으로 가져오거나 로컬 파일을 push하지 않으므로, 기존 원격 커밋이 있다면 이력을 확인하고 병합한 뒤 동기화하세요. 일반 `git remote add`로 PPS와 관계없는 저장소를 연결할 수도 있지만, 이 경우 PPS 문제 ID는 발급되거나 기록되지 않습니다.
+`pps remote`는 Git 원격과 `.pps/repository.json` 연결 캐시만 설정합니다. 원격 내용을 자동으로 가져오거나 로컬 파일을 push하지 않으므로, 기존 원격 커밋이 있다면 이력을 확인하고 병합한 뒤 동기화하세요. 일반 `git remote add`로 PPS와 관계없는 저장소를 연결할 수도 있지만, 이 경우 PPS 문제 ID는 발급되거나 기록되지 않습니다.
 
 ## 5. 원격 PPS 문제 저장소 만들기
 
@@ -149,7 +149,7 @@ pps clone 123 --gh --directory two-sum
 - `--gh`, `-g`: GitHub CLI의 `gh repo clone` 사용
 - `--directory`, `-d`: clone할 로컬 디렉터리 이름 지정
 
-PPS로 clone한 저장소에는 `.git/pps.json`이 기록됩니다. 이 메타데이터 덕분에 저장소 안에서는 `invocate`, `deploy`, 작업 목록, 상세 조회에서 문제 ID를 생략할 수 있습니다.
+PPS로 clone한 저장소에는 `.pps/repository.json`이 기록됩니다. 이 캐시에는 문제 ID, 소유자, remote, branch, 연결 시각이 들어가며 `.git/info/exclude`를 통해 commit 대상에서 제외됩니다. 기존 `.git/pps.json`은 처음 읽을 때 새 위치로 자동 이전됩니다. 이 정보 덕분에 저장소 안에서는 `invocate`, `deploy`, 작업 목록, 상세 조회에서 문제 ID를 생략할 수 있습니다.
 
 이미 존재하는 로컬 Git 저장소를 PPS 문제에 연결할 때는 새로 clone할 필요 없이 다음 명령을 사용합니다.
 
@@ -161,7 +161,7 @@ pps remote 123 --force
 ```
 
 - 위치 인자: `pps clone`과 동일하게 숫자 문제 ID 또는 `nickname/repository`
-- 기본 동작: 현재 Git 저장소에 HTTPS URL의 `origin`을 추가하고 `.git/pps.json` 기록
+- 기본 동작: 현재 Git 저장소에 HTTPS URL의 `origin`을 추가하고 `.pps/repository.json` 기록
 - `--ssh`, `-s`: SSH URL 사용
 - `--name`, `-n`: `origin` 대신 `pps` 같은 다른 Git remote 이름 사용
 - `--force`, `-f`: 같은 이름의 기존 remote가 다른 URL일 때 명시적으로 교체
@@ -207,7 +207,7 @@ two-sum/
 │   └── checker.cc
 ├── validator/       # 선택 사항
 │   └── validator.cc
-└── interactor/      # interactive/two_step 문제에서 사용
+└── interactor/      # interactive/twostep 문제에서 사용
     └── interactor.cc
 ```
 
@@ -275,7 +275,7 @@ two-sum/
 
 핵심 규칙은 다음과 같습니다.
 
-- `problem_type`: `stdio`, `interactive`, `two_step` 중 하나입니다.
+- `problem_type`: `stdio`, `interactive`, `twostep` 같은 Papyrus 원본 문자열을 그대로 사용합니다. 기존 패키지의 `two_step`도 동일한 실행 방식으로 계속 지원합니다.
 - `limits.time`: 밀리초 단위이며 100~10000 범위입니다.
 - `limits.memory`: 바이트 단위이며 4 MiB~1024 MiB 범위입니다.
 - `statements`: 1~10개가 필요하며 각 `name` 파일이 `statement/`에 있어야 합니다.
@@ -363,6 +363,39 @@ pps push --set-upstream origin main
 
 `pull`, `commit`, `push` 뒤의 인자는 각각 `git pull`, `git commit`, `git push`로 전달됩니다. `pps pull --help`처럼 도움말만 요청하면 PPS용 짧은 설명과 예제를 보여줍니다.
 
+서버와 로컬의 차이를 작업 파일을 바꾸지 않고 확인할 수 있습니다.
+
+```sh
+pps repo info
+pps repo info --refresh
+pps repo status
+pps --json repo status
+```
+
+`repo info`는 `.pps/repository.json` 캐시를 읽습니다. 캐시가 없거나 `--refresh`를 주면 설정된 Git remote에서 원본 PPS 저장소를 찾아 캐시합니다. 알아낼 수 없다면 임의로 연결하지 않고 `pps remote <problem>`을 안내합니다.
+
+`repo status`는 remote를 fetch한 뒤 다음 상태 중 하나를 반환합니다.
+
+| 상태 | 의미 |
+| --- | --- |
+| `clean` | 로컬과 서버가 같은 최신 상태 |
+| `server_ahead` | 서버에만 새 변경이 있음 |
+| `local_ahead` | 로컬에만 commit 또는 작업 파일 변경이 있음 |
+| `diverged` | 서버와 로컬 모두 변경됐지만 자동 병합 가능 |
+| `conflicted` | 서버와 로컬 변경이 겹쳐 충돌 해결 필요 |
+
+충돌 예측은 임시 Git index와 merge-tree를 사용하므로 실제 branch, index, commit, 작업 파일은 바꾸지 않습니다. `--no-fetch`는 이미 캐시된 remote-tracking ref만 비교해야 할 때 사용합니다. PPS Code 같은 도구는 `--json` 결과의 `local.files`, `server.files`, `conflict_paths`를 그대로 사용할 수 있습니다.
+
+Papyrus 저장소의 공개 범위도 같은 명령군에서 관리합니다.
+
+```sh
+pps --json repo settings
+pps repo settings --description "Graph problem"
+pps repo settings --private=true --public-solvable=false
+```
+
+`--private`은 GitHub 저장소 공개/비공개, `--public-solvable`은 배포 후 누구나 제출할 수 있는지를 뜻합니다. 생략한 값은 서버 값을 유지하며 `true`와 `false`를 모두 명시할 수 있습니다.
+
 한 번에 동기화하려면 다음 명령을 사용합니다.
 
 ```sh
@@ -371,7 +404,7 @@ pps sync --remote origin --branch main
 pps sync --no-add --message "commit staged files only"
 ```
 
-`pps sync`는 pull → stage → commit → push 순서로 실행합니다. 변경이 없으면 commit만 건너뜁니다.
+`pps sync`는 stage → commit → pull(`--no-rebase`) → push 순서로 실행합니다. 로컬 snapshot을 먼저 commit하므로 서버 변경과 겹치면 Git의 표준 3-way 충돌 정보가 만들어집니다. 변경이 없으면 commit만 건너뜁니다.
 
 - `--message`, `-m`: 커밋 메시지. 생략하면 CLI가 시각을 포함한 메시지를 만듭니다.
 - `--remote`: pull/push할 Git remote입니다.
@@ -536,6 +569,7 @@ PPS CLI는 이 문자열을 API가 요구하는 내부 값으로 변환합니다
 | 원격 PPS 저장소 생성 | `pps create [options]` |
 | 문제 저장소 clone | `pps clone <problem-id 또는 owner/name>` |
 | 기존 Git 저장소를 PPS 문제에 연결 | `pps remote <problem-id 또는 owner/name>` |
+| 저장소 연결·동기화·공개 범위 | `pps repo info`, `pps repo status`, `pps repo settings` |
 | Git 래퍼 | `pps pull`, `pps commit`, `pps push`, `pps sync` |
 | 로컬 문제 실행 | `pps run [repository-path]` |
 | 원격 검증/배포 | `pps invocate`, `pps deploy` |
@@ -564,7 +598,7 @@ pps auth
 
 ### 문제 ID를 추론할 수 없음
 
-PPS clone이 아니거나 `.git/pps.json`이 없는 저장소에서는 `pps remote`로 연결하거나 ID를 명시합니다.
+PPS clone이 아니거나 `.pps/repository.json`이 없는 저장소에서는 먼저 Git remote로 원본 저장소를 자동 탐색합니다. 찾을 수 없으면 `pps remote`로 연결하거나 ID를 명시합니다.
 
 ```sh
 pps remote 123

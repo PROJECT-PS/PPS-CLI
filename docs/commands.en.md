@@ -47,9 +47,9 @@ Remote `pps create` presents numbered choices for omitted settings and requires 
 
 `pps create --local --name two-sum` works without authentication. It creates `<current-directory>/two-sum`, initializes a local Git repository on `main`, and records an empty initial commit. It does not create a PPS or GitHub repository. Only `--name` is accepted with `--local`; add a Git remote later if needed.
 
-Problem `#1` is the public **a + b** example: print the sum of two integers (1 second, 128 MiB, sample `1 2` → `3`). `pps problem 1` prints all statements; use `--statement English` for one exact label. Clone uses HTTPS by default; select SSH with `--ssh` or the GitHub CLI with `--gh`. Repositories cloned by PPS store their problem ID in `.git/pps.json`, allowing later commands to infer it.
+Problem `#1` is the public **a + b** example: print the sum of two integers (1 second, 128 MiB, sample `1 2` → `3`). `pps problem 1` prints all statements; use `--statement English` for one exact label. Clone uses HTTPS by default; select SSH with `--ssh` or the GitHub CLI with `--gh`. Repositories cloned by PPS cache their problem ID, owner, remote, and branch in `.pps/repository.json`; the cache is excluded through `.git/info/exclude`, and legacy `.git/pps.json` data is migrated automatically.
 
-Use `pps remote <problem-id|nickname/repository>` inside an existing local Git repository to connect it without cloning again. HTTPS and the remote name `origin` are the defaults. `--ssh` selects SSH, `--name pps` preserves an existing origin by using another name, and `--force` explicitly replaces a conflicting URL. The command is idempotent when the URL already matches and always records `.git/pps.json`. It never fetches, pulls, pushes, or changes working-tree files, so review and reconcile any existing remote history before synchronization. Public problems can be resolved without authentication; private problems require an authenticated account with access. Add `--json` for structured results.
+Use `pps remote <problem-id|nickname/repository>` inside an existing local Git repository to connect it without cloning again. HTTPS and the remote name `origin` are the defaults. `--ssh` selects SSH, `--name pps` preserves an existing origin by using another name, and `--force` explicitly replaces a conflicting URL. The command is idempotent when the URL already matches and always records `.pps/repository.json`. It never fetches, pulls, pushes, or changes working-tree files, so review and reconcile any existing remote history before synchronization. Public problems can be resolved without authentication; private problems require an authenticated account with access. Add `--json` for structured results.
 
 ### Polygon import
 
@@ -66,13 +66,25 @@ See the [Polygon conversion guide](polygon.en.md) for the complete TeX command c
 
 ```sh
 pps remote 1
+pps repo info
+pps repo status
 pps pull
 pps commit -m "add edge cases"
 pps push
 pps sync -m "refresh tests"
 ```
 
-`pps remote` connects both the Git remote and PPS problem metadata. It does not merge remote history; inspect the branches before the first `pps sync`.
+`pps remote` connects both the Git remote and PPS problem metadata. `pps repo info` reads that cache or safely rediscovers it from Git remotes. `pps repo status` fetches and reports one of `clean`, `server_ahead`, `local_ahead`, `diverged`, or `conflicted`, with file lists and conflict paths available through `--json`. Its temporary-index merge preview never changes the real branch, index, commits, or working tree.
+
+`pps sync` runs stage → commit → pull (`--no-rebase`) → push, so overlapping local and server changes produce standard three-way conflicts. It does not merge remote history merely by connecting a remote; inspect `pps repo status` before the first synchronization.
+
+Read or update the Papyrus description, GitHub visibility, and post-deployment public-submission setting:
+
+```sh
+pps --json repo settings
+pps repo settings --description "Graph problem"
+pps repo settings --private=true --public-solvable=false
+```
 
 ## Validation and deployment
 

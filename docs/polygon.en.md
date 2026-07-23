@@ -42,7 +42,7 @@ JSON mode requires `--force` for a populated destination because it cannot ask f
 | --- | --- |
 | Names, problem type, limits | `config.json` metadata |
 | `application/x-tex` statements | UTF-8 `statement/*.md` |
-| Checker, validators, interactor | Matching PPS source directories |
+| Checker, validators, interactor | Matching PPS source directories; interactors use raw `interactive` or `twostep` problem types |
 | Main solution | The unique `MCS` solution |
 | Solution tags | `AC`, `WA`, `TLE`, `MLE`, and `FAIL` targets |
 | Executables and test commands | Generators and `genscript` entries |

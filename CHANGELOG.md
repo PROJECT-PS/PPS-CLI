@@ -2,6 +2,25 @@
 
 이 문서는 사용자에게 영향을 주는 PPS CLI 변경 사항을 기록합니다. 버전은 [Semantic Versioning](https://semver.org/lang/ko/)을 따릅니다.
 
+## [v0.7.0] - 2026-07-24
+
+### 추가
+
+- 현재 로컬 작업과 GitHub 원격을 `clean`, `server_ahead`, `local_ahead`, `diverged`, `conflicted`로 분류하고 변경 파일·ahead 수·충돌 경로를 JSON으로 제공하는 `pps repo status`
+- `.pps/repository.json`의 연결 캐시를 조회·재탐색하는 `pps repo info`
+- Papyrus의 저장소 설명, GitHub 공개/비공개, 배포 후 공개 제출 허용 여부를 조회·변경하는 `pps repo settings`
+
+### 변경
+
+- `pps clone`과 `pps remote`가 연결 정보를 `.pps/repository.json`에 기록하고, 기존 `.git/pps.json`은 자동 이전
+- 캐시가 없거나 오래된 경우 Git remote에서 원본 PPS 저장소를 안전하게 탐색하며, `.pps`와 `.pps-code`는 로컬 Git 제외 목록에 자동 등록
+- `pps sync`가 로컬 변경을 먼저 커밋한 뒤 pull하여 표준 3-way 충돌 정보를 만들고, 해결 후 push하도록 순서 개선
+- Papyrus 원본 문제 형식 `twostep`을 그대로 허용하면서 기존 `two_step` 패키지와의 실행 호환성 유지
+
+### 수정
+
+- 앞에 공백이 있는 Git porcelain 상태를 잘못 잘라 `config.json`을 `onfig.json`으로 보고하던 동기화 파일 분석 오류 수정
+
 ## [v0.6.0] - 2026-07-21
 
 ### 추가
