@@ -1,26 +1,26 @@
 class Pps < Formula
   desc "Official command-line interface for PROJECT-PS"
   homepage "https://github.com/PROJECT-PS/PPS-CLI"
-  version "0.7.0"
+  version "0.8.0"
   license "MIT"
 
   on_macos do
     if Hardware::CPU.arm?
-      url "https://github.com/PROJECT-PS/PPS-CLI/releases/download/v0.7.0/pps_v0.7.0_darwin_arm64.tar.gz"
-      sha256 "0c4fa074318f0262b0bb5fc0eea56a0dfeac7592646ac49378980765d5feb901"
+      url "https://github.com/PROJECT-PS/PPS-CLI/releases/download/v0.8.0/pps_v0.8.0_darwin_arm64.tar.gz"
+      sha256 "db5dc5dcbe97b44b5a7e8b745433aa02fbd173670cf27418344020c0c0fd0097"
     else
-      url "https://github.com/PROJECT-PS/PPS-CLI/releases/download/v0.7.0/pps_v0.7.0_darwin_amd64.tar.gz"
-      sha256 "e92376cbbecc8917d5313c0620d5be995d6eaa2dcd3465ea5d47e1e66076d299"
+      url "https://github.com/PROJECT-PS/PPS-CLI/releases/download/v0.8.0/pps_v0.8.0_darwin_amd64.tar.gz"
+      sha256 "e435265857635009e7bb928adea0f4a0cfd16fea7e90d7684cb59962e75fae0a"
     end
   end
 
   on_linux do
     if Hardware::CPU.arm?
-      url "https://github.com/PROJECT-PS/PPS-CLI/releases/download/v0.7.0/pps_v0.7.0_linux_arm64.tar.gz"
-      sha256 "f66c655967a72947252a4c2db99926e91503427135e1ddf45addc5e9c2f2f700"
+      url "https://github.com/PROJECT-PS/PPS-CLI/releases/download/v0.8.0/pps_v0.8.0_linux_arm64.tar.gz"
+      sha256 "3857f00e32c77696afcc56fbda65bf6cdde5edee8e3bbf46c2b9b9d591253ec2"
     else
-      url "https://github.com/PROJECT-PS/PPS-CLI/releases/download/v0.7.0/pps_v0.7.0_linux_amd64.tar.gz"
-      sha256 "ce656484bb57b1c32a0850955b94e2678bcad500e0d3a2592126e99de8fc0111"
+      url "https://github.com/PROJECT-PS/PPS-CLI/releases/download/v0.8.0/pps_v0.8.0_linux_amd64.tar.gz"
+      sha256 "fb56553cdc2bd90fd243d8ef19f9484f41f5fae7074ed110018730e5a15cfb87"
     end
   end
 
