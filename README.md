@@ -48,6 +48,8 @@ cd <cloned-directory>
 
 # statement, solution, generator, checker, config.json 등을 편집합니다.
 pps run .
+# PPS Code 같은 도구에서 사용할 구조화된 상세 결과
+pps --json run .
 pps repo status
 pps sync -m "update problem"
 ```

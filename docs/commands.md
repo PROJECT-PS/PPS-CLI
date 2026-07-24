@@ -318,9 +318,12 @@ print(sys.argv[1], sys.argv[2])
 pps run .
 pps run ./two-sum
 pps run ./two-sum --docker
+pps --json run ./two-sum
 ```
 
 기본은 현재 컴퓨터에서 직접 실행하는 native 모드입니다. 실행 모드를 묻지 않으므로 Docker를 원하면 반드시 `--docker`를 붙입니다.
+
+`pps --json run`은 native와 Docker에서 같은 구조의 상세 결과를 표준 출력으로 내보냅니다. `detail`에는 솔루션과 테스트 케이스별 입력, 정답 출력, 사용자 출력, checker 출력, 판정 코드, 실행 시간, 메모리가 들어갑니다. 실행 도중 일부 케이스가 실패해도 수집된 상세 결과와 `error`가 함께 출력됩니다. 진행 경고는 표준 오류로 분리되므로 JSON을 읽는 도구에서 그대로 사용할 수 있습니다.
 
 | 옵션 | 의미 |
 | --- | --- |

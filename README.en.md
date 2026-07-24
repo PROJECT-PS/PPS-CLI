@@ -48,6 +48,8 @@ cd <cloned-directory>
 
 # Edit statement, solution, generator, checker, config.json, and other problem files.
 pps run .
+# Structured per-case details for clients such as PPS Code
+pps --json run .
 pps repo status
 pps sync -m "update problem"
 ```

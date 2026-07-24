@@ -103,11 +103,14 @@ Remote invocation and deployment run `pps sync` by default. Use `--no-sync` to s
 ```sh
 pps run .
 pps run --docker
+pps --json run .
 ```
 
 Native local invocation has no security sandbox; only run trusted repositories. Docker mode uses the network-disabled PPS CLI runner container.
 
 `pps run` never requires PPS authentication and never prompts for an execution mode. Native mode is the default; pass `--docker` explicitly for the runner container. Use `--keep-work` to preserve generated inputs, outputs, and build files for debugging.
+
+`pps --json run` writes the same structured details in native and Docker modes. Each solution-by-test-case entry in `detail` includes the input, expected output, user output, checker output, verdict code, execution time, and memory. When a run fails partway through, the response still contains every detail collected so far together with `error`. Progress warnings remain on standard error, so clients can parse standard output directly.
 
 When native execution needs `testlib.h` and no existing copy can be found, PPS CLI automatically downloads the public PPS-ASSETS repository into the profile config directory. Use `--testlib-dir` or `PPS_TESTLIB_DIR` to override it. The Docker image publishes both Linux AMD64 and ARM64 variants, so Docker selects the matching image on Intel/AMD systems and Apple Silicon.
 

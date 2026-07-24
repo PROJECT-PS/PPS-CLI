@@ -2,6 +2,16 @@
 
 This document records user-visible PPS CLI changes. Versions follow [Semantic Versioning](https://semver.org/).
 
+## [v0.8.0] - 2026-07-25
+
+### Added
+
+- `pps --json run` now returns the same solution-by-test-case detail schema as remote invocation in both native and Docker modes, including input, expected output, user output, checker output, verdict, execution time, and memory.
+
+### Changed
+
+- Failed local runs still emit every detail collected so far together with the error in JSON, allowing clients such as PPS Code to display the failing cases.
+
 ## [v0.7.0] - 2026-07-24
 
 ### Added
