@@ -54,7 +54,7 @@ pps repo status
 pps sync -m "update problem"
 ```
 
-`pps create`가 출력한 문제 ID를 `pps clone`에 사용하세요. 이미 가진 로컬 Git 저장소를 연결하려면 저장소 안에서 `pps remote <problem-id>`를 실행하면 됩니다. `pps run`은 로컬 테스트이므로 로그인하지 않은 상태에서도 실행할 수 있습니다. `pps repo status`는 로컬 작업과 GitHub 서버를 비교해 동기화 상태와 충돌 가능성을 보여줍니다.
+`pps create`가 출력한 문제 ID를 `pps clone`에 사용하세요. 이미 가진 로컬 Git 저장소를 연결하려면 해당 문제의 제작·관리 권한이 있는 계정으로 로그인한 뒤 저장소 안에서 `pps remote <problem-id>`를 실행하면 됩니다. `pps run`은 로컬 테스트이므로 로그인하지 않은 상태에서도 실행할 수 있습니다. `pps repo status`는 로컬 작업과 GitHub 서버를 비교해 동기화 상태와 충돌 가능성을 보여줍니다.
 
 ### 2. Polygon 패키지 변환과 동기화
 

@@ -2,6 +2,16 @@
 
 This document records user-visible PPS CLI changes. Versions follow [Semantic Versioning](https://semver.org/).
 
+## [v0.8.1] - 2026-07-25
+
+### Security
+
+- `pps remote` now connects a local Git repository only after verifying PPS authentication and management access to the target problem. Public-list visibility no longer grants connection permission.
+
+### Improved
+
+- Missing management access returns a clear permission error containing the problem ID, allowing clients such as PPS Code to distinguish it from an authentication failure.
+
 ## [v0.8.0] - 2026-07-25
 
 ### Added

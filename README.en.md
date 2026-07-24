@@ -54,7 +54,7 @@ pps repo status
 pps sync -m "update problem"
 ```
 
-Use the problem ID printed by `pps create` with `pps clone`. To connect an existing local Git repository, run `pps remote <problem-id>` inside it. `pps run` performs local testing and works without signing in. `pps repo status` compares local work with the GitHub server and reports synchronization state and potential conflicts.
+Use the problem ID printed by `pps create` with `pps clone`. To connect an existing local Git repository, sign in with an account that can author or manage the problem, then run `pps remote <problem-id>` inside it. `pps run` performs local testing and works without signing in. `pps repo status` compares local work with the GitHub server and reports synchronization state and potential conflicts.
 
 ### 2. Convert and synchronize a Polygon package
 
