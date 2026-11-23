@@ -21,6 +21,8 @@ curl -fsSL https://raw.githubusercontent.com/PROJECT-PS/PPS-CLI/main/install.sh 
 
 설치 위치를 바꾸려면 `PPS_INSTALL_DIR`에 현재 PATH에 포함된 디렉터리를 지정하세요.
 
+기본 설치에서 `/usr/local/bin`에 관리자 권한이 필요하면 실제 바이너리는 `~/.local/share/pps/bin/pps`에 두고 `/usr/local/bin/pps`를 링크합니다. 초기 링크 설치 뒤 자동 업데이트에는 sudo가 필요하지 않습니다. 직접 지정한 시스템 경로나 `.deb` 설치는 기존 권한 정책을 따릅니다.
+
 Windows PowerShell:
 
 ```powershell
@@ -41,7 +43,7 @@ Windows는 이 PowerShell 설치 스크립트와 GitHub Release ZIP으로 독립
 pps update
 ```
 
-PPS는 명령 실행 시 하루 한 번만 최신 버전을 확인합니다. 네트워크 요청은 최대 2초이며 타임아웃이나 오류가 발생해도 명령 실행에는 영향을 주지 않습니다. 실패한 확인도 `update-check.json`에 시각을 기록해 24시간 동안 다시 시도하지 않습니다.
+PPS v0.9.0부터 명령 실행 시 하루 한 번 최신 버전을 확인하고, 새 릴리즈가 있으면 체크섬 검증 후 자동 설치합니다. 버전 확인은 최대 2초, 자동 다운로드·설치는 최대 30초입니다. 오류나 권한 부족은 stderr에 안내하며 원래 명령을 계속 실행합니다. 실패한 확인도 24시간 동안 재시도하지 않으며 `pps update`로 즉시 재시도할 수 있습니다. `pps config set auto_update false`로 끄고 `pps config unset auto_update`로 기본값을 복구합니다. `PPS_NO_UPDATE=1`은 해당 실행의 자동 확인과 설치를 모두 끕니다. 도움말·설정·`--version`은 자동 업데이트하지 않습니다.
 
 업데이트 파일은 GitHub Release의 `checksums.txt`로 SHA-256을 확인합니다. Linux와 macOS는 검증된 실행 파일을 원자적으로 교체합니다. Windows는 실행 중인 `pps.exe`가 잠길 수 있으므로 새 파일을 검증한 뒤 백그라운드 작업이 명령 종료를 기다렸다가 교체합니다.
 
@@ -67,7 +69,7 @@ Debian/Ubuntu는 릴리즈의 `pps_<version>_amd64.deb` 또는 `pps_<version>_ar
 
 ## 삭제
 
-- macOS/Linux 설치 스크립트: 기본 설치에서는 `sudo rm /usr/local/bin/pps`로 삭제합니다. `PPS_INSTALL_DIR`을 사용했다면 해당 경로의 `pps`를 삭제합니다.
+- macOS/Linux 설치 스크립트: 기본 설치에서는 `sudo rm /usr/local/bin/pps`로 실행 파일 또는 링크를 삭제합니다. 사용자 관리 바이너리를 사용했다면 `~/.local/share/pps/bin/pps`도 삭제합니다. `PPS_INSTALL_DIR`을 사용했다면 해당 경로의 `pps`를 삭제합니다.
 - Windows: 기본 설치 경로 `%LOCALAPPDATA%\Programs\PPS`를 삭제하고, 사용자 `PATH`에서 같은 경로를 제거합니다. 별도 `-InstallDir`을 사용했다면 해당 경로를 삭제합니다.
 - Homebrew: `brew uninstall PROJECT-PS/PPS-CLI/pps` 후 필요하면 `brew untap PROJECT-PS/PPS-CLI`
 - Debian/Ubuntu: `sudo apt remove pps`

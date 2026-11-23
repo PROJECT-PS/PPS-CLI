@@ -2,6 +2,19 @@
 
 This document records user-visible PPS CLI changes. Versions follow [Semantic Versioning](https://semver.org/).
 
+## [v0.9.0] - 2026-11-23
+
+### Fixed
+
+- Docker transfers files instead of bind-mounting host temporary paths, supporting Colima, Docker Desktop and remote engines without shared-path configuration.
+- Interactive and two-step execution now closes pipes and cleans up child processes on EOF, interactor errors, timeouts, failed starts and cancellation. Both stages share one execution path with stage-specific diagnostics.
+- Concurrent diagnostics are isolated and bounded. Windows executable suffixes, Python discovery and macOS Homebrew GCC discovery are handled automatically.
+
+### Added
+
+- `pps config show`, `pps config set tools.cxx <path>` and `pps config unset tools.cxx` configure native compilers and runtimes. Defaults use automatic discovery; `PPS_CC`, `PPS_CXX`, `PPS_PYTHON`, `PPS_PYPY`, `PPS_JAVA` and `PPS_JAVAC` override settings.
+- Release builds automatically install a verified update after the daily version check. Disable with `pps config set auto_update false` or `PPS_NO_UPDATE=1`. Windows replacement waits for the current command to exit.
+
 ## [v0.8.1] - 2026-07-25
 
 ### Security
@@ -28,7 +41,7 @@ This document records user-visible PPS CLI changes. Versions follow [Semantic Ve
 
 - `pps repo status` classifies local work against GitHub as `clean`, `server_ahead`, `local_ahead`, `diverged`, or `conflicted`, with JSON change lists, ahead counts, and conflict paths
 - `pps repo info` reads or rediscovers the connection cached in `.pps/repository.json`
-- `pps repo settings` reads and updates the Papyrus repository description, GitHub visibility, and post-deployment public-submission setting
+- `pps repo settings` reads and updates the Papyrus package description, package visibility, and problem visibility
 
 ### Changed
 
@@ -45,7 +58,7 @@ This document records user-visible PPS CLI changes. Versions follow [Semantic Ve
 
 ### Added
 
-- `pps remote` for connecting an existing Git repository with the same problem ID or `nickname/repository` reference accepted by `pps clone`
+- `pps remote` for connecting an existing Git repository with the same problem ID or `nickname/package` reference accepted by `pps clone`
 - HTTPS/SSH selection, named remotes, explicit `--force` conflict replacement, JSON results, and automatic `.git/pps.json` metadata
 
 ### Changed

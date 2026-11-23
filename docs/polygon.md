@@ -18,7 +18,7 @@ pps polygon ./polygon-package ./two-sum
 pps polygon ./polygon-package.zip ./two-sum
 ```
 
-변환이 끝나면 `./two-sum`에 `config.json`, 지문, 해답, 생성기, checker 등이 생성됩니다. 원본 Polygon 패키지는 수정하지 않습니다.
+변환이 끝나면 `./two-sum`에 `config.json`, 지문, 솔루션, 제네레이터, 정답 체커 등이 생성됩니다. 원본 Polygon 패키지는 수정하지 않습니다.
 
 ## 1. 준비할 Polygon 패키지
 
@@ -26,12 +26,12 @@ pps polygon ./polygon-package.zip ./two-sum
 
 - 패키지 설명 파일 `problem.xml`
 - `problem.xml`이 가리키는 TeX 지문
-- checker와 기준 해답
+- 정답 체커(`checker`)와 메인 솔루션
 - 생성 테스트에 사용하는 executable 원본
-- manual 테스트가 있다면 해당 입력 파일
-- validator나 interactor를 사용한다면 그 원본
+- `manual test`가 있다면 해당 입력 파일
+- 밸리데이터(`validator`)나 인터랙터(`interactor`)를 사용한다면 그 원본
 
-가능하면 Polygon의 Linux/full package처럼 원본과 manual 테스트를 모두 포함한 패키지를 사용하세요. ZIP 최상위에 폴더가 한 겹 더 있어도 CLI가 내부의 단일 `problem.xml`을 찾습니다. `problem.xml`이 없거나 둘 이상이면 어느 문제를 변환해야 하는지 확정할 수 없으므로 중단합니다.
+가능하면 Polygon의 Linux/full package처럼 원본과 `manual test`를 모두 포함한 패키지를 사용하세요. ZIP 최상위에 폴더가 한 겹 더 있어도 CLI가 내부의 단일 `problem.xml`을 찾습니다. `problem.xml`이 없거나 둘 이상이면 어느 문제를 변환해야 하는지 확정할 수 없으므로 중단합니다.
 
 ## 2. 대상 경로 덮어쓰기
 
@@ -62,35 +62,35 @@ pps --json polygon package.zip ./two-sum --force
 | --- | --- |
 | `problem.xml`의 이름·형식·제한 | `config.json`의 문제 정보와 제한 |
 | `application/x-tex` 지문 | `statement/*.md` UTF-8 Markdown |
-| checker | `checker/` |
-| 첫 validator | `config.json`에 연결하고 모든 validator 원본은 `validator/`에 복사 |
-| interactor | `interactor/`, 문제 형식은 `interactive` 또는 Papyrus 원본 문자열 `twostep` |
-| main solution | 유일한 `MCS` 해답 |
+| 정답 체커(`checker`) | `checker/` |
+| 첫 밸리데이터(`validator`) | `config.json`에 등록하고 모든 밸리데이터 원본은 `validator/`에 복사 |
+| 인터랙터(`interactor`) | `interactor/`, 문제 타입은 `interactive` 또는 Papyrus 원본 문자열 `twostep` |
+| main solution | 유일한 `MCS` 솔루션 |
 | accepted/rejected solution 태그 | `AC`, `WA`, `TLE`, `MLE`, `FAIL` 조합 |
-| test executable | `generator/`와 `genscript` alias |
-| manual test | 바이트를 그대로 출력하는 Python 생성기 |
-| Polygon group와 dependency | PPS subtask group, 점수, 의존성 |
+| test executable | `generator/` 제네레이터와 `genscript` 별칭 |
+| manual test | 커스텀 예제용 Python 제네레이터 |
+| Polygon group와 dependency | PPS 서브태스크 그룹, 배점, 의존성 |
 
-PPS에서 지원하는 언어로 매핑할 수 없는 checker, validator, interactor, 필수 generator 또는 기준 해답은 실행할 수 없으므로 명확한 오류로 중단합니다. 참고용 해답은 원본을 보존하되 언어가 비어 있을 수 있으며 `pps run`에서는 건너뜁니다.
+PPS에서 지원하는 언어로 매핑할 수 없는 정답 체커, 밸리데이터, 인터랙터, 필수 제네레이터 또는 메인 솔루션은 실행할 수 없으므로 명확한 오류로 중단합니다. 참고용 솔루션은 원본을 보존하되 언어가 비어 있을 수 있으며 `pps run`에서는 건너뜁니다.
 
-Polygon의 main 해답이 없으면 첫 accepted 해답을 `MCS`로 선택하고 경고합니다. PPS 제한 범위를 벗어난 시간·메모리·서브태스크 점수는 허용 범위로 조정하고 경고에 원래 값을 표시합니다. 경고가 있으면 배포 전에 반드시 의도를 확인하세요.
+Polygon의 main solution이 없으면 첫 accepted solution을 `MCS`로 선택하고 경고합니다. PPS 제한 범위를 벗어난 시간·메모리·서브태스크 배점은 허용 범위로 조정하고 경고에 원래 값을 표시합니다. 경고가 있으면 배포 전에 반드시 의도를 확인하세요.
 
-Polygon 예제가 없으면 첫 테스트를 PPS 예제로 표시합니다. 예제가 PPS 상한인 20개보다 많으면 앞의 20개만 예제로 표시하되, 나머지도 일반 `genscript` 테스트로 그대로 유지합니다.
+Polygon 예제 데이터가 없으면 첫 테스트 케이스를 PPS 예제 데이터로 표시합니다. 예제 데이터가 PPS 상한인 20개보다 많으면 앞의 20개만 예제 데이터로 표시하되, 나머지도 일반 `genscript` 테스트 케이스로 그대로 유지합니다.
 
-서브태스크 문제에서 group이 비어 있는 예제나 테스트가 있으면 PPS의 필수 group 규칙을 만족시키기 위해 이름순 첫 서브태스크에 배정하고 경고합니다. 의도한 채점 그룹이 다르면 `config.json`에서 해당 `subtask_group`을 수정하세요.
+서브태스크 문제에서 group이 비어 있는 예제 데이터나 테스트 케이스가 있으면 PPS의 필수 group 규칙을 만족시키기 위해 이름순 첫 서브태스크에 배정하고 경고합니다. 의도한 서브태스크 그룹이 다르면 `config.json`에서 해당 `subtask_group`을 수정하세요.
 
-## 4. manual 테스트 처리
+## 4. Polygon `manual test` 처리
 
-PPS는 Polygon의 manual generation method를 직접 표현하지 않습니다. CLI는 각 manual 입력을 Python `bytes` 데이터로 넣은 `__pps_manual.py` 생성기를 만듭니다.
+PPS는 Polygon의 manual generation method를 직접 표현하지 않습니다. CLI는 각 `manual test` 입력을 Python `bytes` 데이터로 넣은 커스텀 예제용 `__pps_manual.py` 제네레이터를 만듭니다.
 
 이 방식은 다음을 보장합니다.
 
 - CRLF와 LF를 임의로 바꾸지 않음
 - UTF-8이 아닌 테스트 입력도 바이트 단위로 보존
 - 셸 인용이나 운영체제 기본 인코딩에 의존하지 않음
-- 생성기 원본이 너무 커지면 여러 파일로 자동 분할
+- 제네레이터 원본이 너무 커지면 여러 파일로 자동 분할
 
-따라서 Windows에서 만든 패키지의 manual 입력도 변환 과정에서 글자가 바뀌지 않습니다.
+따라서 Windows에서 만든 패키지의 `manual test` 입력도 변환 과정에서 글자가 바뀌지 않습니다.
 
 ## 5. LaTeX에서 Markdown으로 변환되는 범위
 
@@ -132,7 +132,7 @@ Polygon의 공식 HTML 명령이 아닌 프로젝트 전용 LaTeX는 내용을 �
 4. 언어별 legacy fallback: EUC-KR/CP949, Windows-1251, Shift_JIS, GB18030/Big5
 5. Windows-1252
 
-소스 코드, checker, 이미지와 manual 테스트는 텍스트로 다시 인코딩하지 않고 원본 바이트를 복사합니다. Windows 경로의 `\`는 Polygon 패키지 경로로 안전하게 해석하며 출력 경로에는 현재 운영체제 규칙을 사용합니다.
+소스 코드, 정답 체커, 이미지와 `manual test`는 텍스트로 다시 인코딩하지 않고 원본 바이트를 복사합니다. Windows 경로의 `\`는 Polygon 패키지 경로로 안전하게 해석하며 출력 경로에는 현재 운영체제 규칙을 사용합니다.
 
 ## 7. ZIP 처리와 안전 제한
 
@@ -175,7 +175,7 @@ git add -A
 git commit -m "import Polygon package"
 ```
 
-이미 만든 PPS 원격 문제에 연결하려면 변환 결과의 Git 저장소 안에서 `pps remote <problem-id 또는 owner/name>`를 실행합니다. 이 명령은 remote와 문제 ID 메타데이터만 기록하고 원격 이력을 병합하지 않으므로, branch와 기존 커밋을 확인한 뒤 `pps sync`, `pps invocate`, `pps deploy`를 사용하세요.
+이미 만든 PPS 원격 문제 패키지에 연결하려면 변환 결과의 Git 저장소 안에서 `pps remote <problem-id 또는 owner/package>`를 실행합니다. 이 명령은 remote와 문제 ID 메타데이터만 기록하고 원격 이력을 병합하지 않으므로, branch와 기존 커밋을 확인한 뒤 `pps sync`, `pps invocate`, `pps deploy`를 사용하세요.
 
 ## 9. 문제 해결
 
@@ -187,7 +187,7 @@ ZIP이 아닌 다른 파일을 전달했거나 불완전한 패키지입니다. 
 
 여러 문제를 묶은 상위 디렉터리 대신 변환할 한 문제의 디렉터리를 직접 지정하세요.
 
-### generator가 executable에 없다고 나옴
+### Polygon `generator`가 executable에 없다고 나옴
 
 `tests/test@cmd`의 첫 단어와 `files/executables`의 원본 이름이 맞지 않습니다. Polygon에서 완전한 패키지를 다시 만들거나 `problem.xml`과 파일 구성을 확인하세요.
 
@@ -197,4 +197,4 @@ ZIP이 아닌 다른 파일을 전달했거나 불완전한 패키지입니다. 
 
 ### 변환은 성공했지만 `pps run`이 실패함
 
-컴파일러 버전 차이, Polygon 전용 헤더/리소스, PPS가 지원하지 않는 실행 언어, checker 인자 차이일 수 있습니다. `pps run . --keep-work` 출력과 생성된 `config.json`을 함께 확인하세요.
+컴파일러 버전 차이, Polygon 전용 헤더/리소스, PPS가 지원하지 않는 실행 언어, 정답 체커 인자 차이일 수 있습니다. `pps run . --keep-work` 출력과 생성된 `config.json`을 함께 확인하세요.

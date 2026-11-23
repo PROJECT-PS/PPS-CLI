@@ -34,7 +34,7 @@ Starting with `v0.2.0`, install the latest release on every supported platform w
 pps update
 ```
 
-PPS checks for a new release at most once per day when a command runs. The network request is limited to two seconds. Timeouts and other errors do not affect the requested command, but the attempted check is still recorded in `update-check.json` so it is not repeated for 24 hours.
+From v0.9.0, release builds check once per day and automatically install a newer verified release. The check has a two-second timeout and automatic download/installation has a 30-second timeout. Errors or insufficient permissions are reported to stderr while the requested command continues. Failed checks also wait 24 hours; use `pps update` to retry immediately. Disable with `pps config set auto_update false`, restore the default with `pps config unset auto_update`, or skip both checking and installing for an invocation with `PPS_NO_UPDATE=1`. Help, configuration and `--version` do not auto-update.
 
 The updater verifies the downloaded archive against the release's `checksums.txt`. Linux and macOS atomically replace the verified executable. On Windows, a background process waits for the running `pps.exe` to exit before replacing it.
 
@@ -54,3 +54,5 @@ Archive names follow `pps_<version>_<os>_<arch>`, with `.tar.gz` on Linux/macOS 
 - Debian/Ubuntu: `sudo apt remove pps`
 
 Authentication data remains until `~/.pps` on Linux/macOS or `%APPDATA%\PPS` on Windows is removed.
+
+When the default `/usr/local/bin` requires administrator access, the installer stores the executable in `~/.local/share/pps/bin/pps` and creates a launcher symlink in `/usr/local/bin`. Subsequent automatic updates need no sudo. Explicit system destinations and `.deb` installations retain their existing permission requirements.

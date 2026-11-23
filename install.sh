@@ -81,7 +81,17 @@ else
   command -v sudo >/dev/null 2>&1 || fail "administrator access is required to install to $install_dir; install sudo or set PPS_INSTALL_DIR to a writable directory on PATH"
   printf 'Administrator access is required to install to %s.\n' "$install_dir"
   sudo mkdir -p "$install_dir"
-  sudo install -m 0755 "$tmp_dir/extract/pps" "$install_dir/pps"
+  if [ -z "$requested_install_dir" ] && [ "$(id -u)" != 0 ]; then
+    # Keep the executable user-writable for verified atomic self-updates. Only
+    # the launcher in the active PATH needs administrator access.
+    managed_dir="$HOME/.local/share/pps/bin"
+    mkdir -p "$managed_dir"
+    install -m 0755 "$tmp_dir/extract/pps" "$managed_dir/pps.new"
+    mv -f "$managed_dir/pps.new" "$managed_dir/pps"
+    sudo ln -sfn "$managed_dir/pps" "$install_dir/pps"
+  else
+    sudo install -m 0755 "$tmp_dir/extract/pps" "$install_dir/pps"
+  fi
 fi
 
 printf 'Installed PPS CLI %s to %s/pps\n' "$version" "$install_dir"

@@ -98,4 +98,4 @@ git add -A
 git commit -m "import Polygon package"
 ```
 
-To connect an existing PPS problem, run `pps remote <problem-id|owner/name>` inside the converted Git repository. It records the remote and PPS problem metadata but does not merge remote history. Review the branches and existing commits before using `pps sync`, `pps invocate`, and `pps deploy`.
+To connect an existing PPS problem package, run `pps remote <problem-id|owner/package>` inside the converted Git repository. It records the remote and PPS problem metadata but does not merge remote history. Review the branches and existing commits before using `pps sync`, `pps invocate`, and `pps deploy`.

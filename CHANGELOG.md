@@ -2,6 +2,20 @@
 
 이 문서는 사용자에게 영향을 주는 PPS CLI 변경 사항을 기록합니다. 버전은 [Semantic Versioning](https://semver.org/lang/ko/)을 따릅니다.
 
+## [v0.9.0] - 2026-11-23
+
+### 수정
+
+- Docker가 호스트 임시 경로를 직접 마운트하지 않고 파일을 전송하도록 변경했습니다. macOS Colima, Windows Docker Desktop과 원격 Docker에서 경로 공유 설정 없이 실행합니다.
+- interactive/two step에서 EOF, 인터랙터 오류, 시간 초과, 실행 실패와 취소 시 파이프와 자식 프로세스를 정리합니다. 두 단계의 실행 경로를 통합하고 실패 단계를 표시합니다.
+- 동시에 기록되는 오류 출력을 분리하고 크기를 제한하여 오류 프로그램이 CLI를 멈추거나 메모리를 소진하지 않도록 했습니다.
+- Windows 실행 파일 확장자, Python 이름, Mac Homebrew GCC 탐색을 보완했습니다.
+
+### 추가
+
+- `pps config show`, `pps config set tools.cxx <path>`, `pps config unset tools.cxx`로 컴파일러와 런타임을 설정합니다. 기본은 자동 탐색이며 `PPS_CC`, `PPS_CXX`, `PPS_PYTHON`, `PPS_PYPY`, `PPS_JAVA`, `PPS_JAVAC`로 일시적으로 덮어쓸 수 있습니다.
+- 릴리즈 빌드는 하루 한 번 새 버전을 확인하고 체크섬 검증 후 자동 설치합니다. `pps config set auto_update false` 또는 `PPS_NO_UPDATE=1`로 끌 수 있습니다. Windows에서는 실행 중인 명령이 끝난 뒤 교체합니다.
+
 ## [v0.8.1] - 2026-07-25
 
 ### 보안
@@ -33,7 +47,7 @@
 ### 변경
 
 - `pps clone`과 `pps remote`가 연결 정보를 `.pps/repository.json`에 기록하고, 기존 `.git/pps.json`은 자동 이전
-- 캐시가 없거나 오래된 경우 Git remote에서 원본 PPS 저장소를 안전하게 탐색하며, `.pps`와 `.pps-code`는 로컬 Git 제외 목록에 자동 등록
+- 캐시가 없거나 오래된 경우 Git remote에서 원본 PPS 문제 패키지를 안전하게 탐색하며, `.pps`와 `.pps-code`는 로컬 Git 제외 목록에 자동 등록
 - `pps sync`가 로컬 변경을 먼저 커밋한 뒤 pull하여 표준 3-way 충돌 정보를 만들고, 해결 후 push하도록 순서 개선
 - Papyrus 원본 문제 형식 `twostep`을 그대로 허용하면서 기존 `two_step` 패키지와의 실행 호환성 유지
 
@@ -45,7 +59,7 @@
 
 ### 추가
 
-- `pps clone`과 동일한 문제 ID 또는 `nickname/repository` 형식으로 기존 Git 저장소를 PPS 문제에 연결하는 `pps remote`
+- `pps clone`과 동일한 문제 ID 또는 `nickname/package` 형식으로 기존 Git 저장소를 PPS 문제 패키지에 연결하는 `pps remote`
 - HTTPS/SSH URL 선택, remote 이름 지정, 충돌 시 명시적 `--force`, JSON 결과와 `.git/pps.json` 자동 기록
 
 ### 변경
@@ -65,7 +79,7 @@
 ### 변경
 
 - 기존 대상은 y/n 확인 뒤 전체 교체하며 `n`은 원본을 보존; 자동화에는 명시적 `--force` 제공
-- manual 테스트를 원본 바이트 그대로 출력하는 분할 가능한 Python 생성기로 변환
+- Polygon `manual test`를 원본 바이트 그대로 출력하는 분할 가능한 Python 제네레이터로 변환
 - 임시 경로에서 변환과 PPS 정적 검증을 끝낸 뒤 대상을 교체하고 실패 시 기존 데이터 복원
 
 ## [v0.4.0] - 2026-07-20
@@ -121,6 +135,6 @@
 ### 추가
 
 - Windows, macOS, Linux의 AMD64 및 ARM64 릴리즈 기반 구성
-- 문제 저장소 생성, 검증, 실행, 배포 및 제출 명령
+- 문제 패키지 생성, 검증, 실행, 배포 및 제출 명령
 - 운영체제별 안전한 인증 설정 저장
 - 직접 설치 스크립트와 패키지 관리자 메타데이터

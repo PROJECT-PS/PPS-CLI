@@ -54,7 +54,7 @@ pps repo status
 pps sync -m "update problem"
 ```
 
-Use the problem ID printed by `pps create` with `pps clone`. To connect an existing local Git repository, sign in with an account that can author or manage the problem, then run `pps remote <problem-id>` inside it. `pps run` performs local testing and works without signing in. `pps repo status` compares local work with the GitHub server and reports synchronization state and potential conflicts.
+Use the problem ID printed by `pps create` with `pps clone`. To connect an existing local Git repository to a problem package, sign in with an account that can author or manage the problem, then run `pps remote <problem-id>` inside it. `pps run` performs local testing and works without signing in. `pps repo status` compares local work with the GitHub server and reports synchronization state and potential conflicts.
 
 ### 2. Convert and synchronize a Polygon package
 
@@ -85,8 +85,8 @@ pps submit <problem-id> solution.cpp
 | Command | Purpose |
 | --- | --- |
 | `pps auth` | Sign in, sign out, and inspect authentication status |
-| `pps create`, `pps clone`, `pps remote` | Create, clone, or connect a problem repository |
-| `pps repo info`, `pps repo status`, `pps repo settings` | Manage repository connection, sync state, and visibility |
+| `pps create`, `pps clone`, `pps remote` | Create, clone, or connect a problem package |
+| `pps repo info`, `pps repo status`, `pps repo settings` | Manage problem package connection, sync state, and visibility |
 | `pps run` | Build and test solutions locally |
 | `pps polygon` | Convert a Polygon package to PPS format |
 | `pps sync` | Commit, pull, and push Git changes |
@@ -110,3 +110,5 @@ The [command guide](docs/commands.en.md) covers complete workflows and more exam
 - Release history: [CHANGELOG.en.md](CHANGELOG.en.md)
 - Security reports: [SECURITY.md](SECURITY.md)
 - License: [MIT License](LICENSE)
+
+Release builds from v0.9.0 install verified updates automatically. Run `pps update` once from older versions. Inspect detected compilers with `pps config show` or set one with `pps config set tools.cxx <path>`.
