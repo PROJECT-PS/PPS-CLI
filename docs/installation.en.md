@@ -56,3 +56,5 @@ Archive names follow `pps_<version>_<os>_<arch>`, with `.tar.gz` on Linux/macOS 
 Authentication data remains until `~/.pps` on Linux/macOS or `%APPDATA%\PPS` on Windows is removed.
 
 When the default `/usr/local/bin` requires administrator access, the installer stores the executable in `~/.local/share/pps/bin/pps` and creates a launcher symlink in `/usr/local/bin`. Subsequent automatic updates need no sudo. Explicit system destinations and `.deb` installations retain their existing permission requirements.
+
+On Windows v0.8.1 and earlier, the old replacement helper may fail to start and leave the installed version unchanged. Rerun the PowerShell installer once to bootstrap v0.9.0; its automatic updater contains the fix.

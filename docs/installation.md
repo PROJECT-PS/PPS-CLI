@@ -75,3 +75,5 @@ Debian/Ubuntu는 릴리즈의 `pps_<version>_amd64.deb` 또는 `pps_<version>_ar
 - Debian/Ubuntu: `sudo apt remove pps`
 
 인증 정보까지 삭제하려면 Linux/macOS에서 `~/.pps`, Windows에서 `%APPDATA%\PPS`를 별도로 삭제하세요. 이 작업은 로그아웃 정보와 세션을 복구할 수 없게 삭제합니다.
+
+Windows v0.8.1 이하의 자체 업데이트는 파일 교체 helper가 실행되지 않아 버전이 그대로 남을 수 있습니다. 이 경우 위 PowerShell 설치 명령을 한 번 다시 실행하세요. v0.9.0부터는 수정된 자동 업데이트가 동작합니다.

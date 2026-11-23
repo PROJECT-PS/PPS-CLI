@@ -112,3 +112,5 @@ The [command guide](docs/commands.en.md) covers complete workflows and more exam
 - License: [MIT License](LICENSE)
 
 Release builds from v0.9.0 install verified updates automatically. Run `pps update` once from older versions. Inspect detected compilers with `pps config show` or set one with `pps config set tools.cxx <path>`.
+
+On Windows v0.8.1 and earlier, the old replacement helper may fail to start and leave the installed version unchanged. Rerun the PowerShell installer once to bootstrap v0.9.0; its automatic updater contains the fix.

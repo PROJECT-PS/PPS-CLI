@@ -6,6 +6,8 @@ This document records user-visible PPS CLI changes. Versions follow [Semantic Ve
 
 ### Fixed
 
+- The Windows installer recognizes .NET's `X64` architecture name. Use the PowerShell installer to bootstrap old versions whose replacement helper fails to start.
+
 - Docker transfers files instead of bind-mounting host temporary paths, supporting Colima, Docker Desktop and remote engines without shared-path configuration.
 - Interactive and two-step execution now closes pipes and cleans up child processes on EOF, interactor errors, timeouts, failed starts and cancellation. Both stages share one execution path with stage-specific diagnostics.
 - Concurrent diagnostics are isolated and bounded. Windows executable suffixes, Python discovery and macOS Homebrew GCC discovery are handled automatically.

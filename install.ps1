@@ -25,6 +25,7 @@ function Test-PathEntry {
 
 $nativeArchitecture = [System.Runtime.InteropServices.RuntimeInformation]::OSArchitecture.ToString().ToUpperInvariant()
 $architecture = switch ($nativeArchitecture) {
+    "X64" { "amd64" }
     "AMD64" { "amd64" }
     "ARM64" { "arm64" }
     default { throw "Unsupported CPU architecture: $nativeArchitecture" }

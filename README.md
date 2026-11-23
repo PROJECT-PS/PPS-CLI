@@ -115,3 +115,5 @@ pps <command> --help
 - 버전별 변경 사항: [CHANGELOG.md](CHANGELOG.md)
 - 보안 문제 제보: [SECURITY.md](SECURITY.md)
 - 라이선스: [MIT License](LICENSE)
+
+Windows v0.8.1 이하의 자체 업데이트는 파일 교체 helper가 실행되지 않아 버전이 그대로 남을 수 있습니다. 이 경우 위 PowerShell 설치 명령을 한 번 다시 실행하세요. v0.9.0부터는 수정된 자동 업데이트가 동작합니다.
